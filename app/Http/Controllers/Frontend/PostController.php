@@ -128,7 +128,7 @@ class PostController extends Controller
             ->latest()
             ->paginate(10);
 
-        return view('frontend.layouts.category', compact('category', 'posts', 'languages', 'lang', 'activeLang', 'translatedSlugs'));
+        return view('frontend.category', compact('category', 'posts', 'languages', 'lang', 'activeLang', 'translatedSlugs'));
     }
 
     public function tag($lang = null, $slug)
@@ -183,6 +183,6 @@ class PostController extends Controller
             ->latest()
             ->paginate(10);
 
-        return view('frontend.layouts.tag', compact('tag', 'posts', 'languages', 'lang', 'activeLang', 'translatedSlugs'));
+        return view('frontend.tag', compact('tag', 'posts', 'languages', 'lang', 'activeLang', 'translatedSlugs'));
     }
 }

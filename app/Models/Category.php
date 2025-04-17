@@ -2,17 +2,24 @@
 
 namespace App\Models;
 
-use Illuminate\Database\Eloquent\Model;
-use Illuminate\Database\Eloquent\Relations\HasMany;
 use Illuminate\Database\Eloquent\Relations\BelongsToMany;
+use Illuminate\Database\Eloquent\Relations\HasMany;
+use Illuminate\Database\Eloquent\Model;
 
 class Category extends Model
 {
     protected $fillable = [];
 
-    public function translations()
+    public function translations(): HasMany
     {
-        return $this->hasMany(CategoryTranslation::class);
+        return $this
+            ->hasMany(CategoryTranslation::class, 'category_id')
+            ->select([
+                'id',
+                'category_id',
+                'name',
+                'slug'
+            ]);
     }
 
     public function posts()

@@ -3,6 +3,7 @@
 namespace App\Models;
 
 use Illuminate\Database\Eloquent\Model;
+use Illuminate\Database\Eloquent\Relations\HasMany;
 
 class Post extends Model
 {
@@ -23,9 +24,18 @@ class Post extends Model
         'comment_enabled' => 'boolean',
     ];
 
-    public function translations()
+    public function translations(): HasMany
     {
-        return $this->hasMany(PostTranslation::class);
+        return $this->hasMany(PostTranslation::class, 'post_id')
+            ->select([
+                'id',
+                'post_id',
+                'language_slug',
+                'title',
+                'slug',
+                'short_description',
+                'updated_at'
+            ]);
     }
 
     public function category()

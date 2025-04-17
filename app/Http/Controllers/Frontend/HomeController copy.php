@@ -10,7 +10,6 @@ use App\Traits\LanguageValidator;
 class HomeController extends Controller
 {
     use LanguageValidator;
-
     // / yönlendirmesi için (istersen kullanabilirsin)
     public function redirectToDefault()
     {
@@ -21,7 +20,7 @@ class HomeController extends Controller
     private function validateLanguage($lang)
     {
         $languages = Language::where('status', 1)->pluck('slug')->toArray();
-
+        
         if (!in_array($lang, $languages)) {
             abort(404, 'Invalid language code');
         }
@@ -30,7 +29,7 @@ class HomeController extends Controller
     public function index($lang = null)
     {
         $languages = Language::where('status', 1)->get();
-        
+    
         // Eğer $lang yoksa varsayılanı bul
         $lang = $lang ?? $languages->firstWhere('is_default', 1)?->slug ?? 'tr';
         
@@ -40,27 +39,10 @@ class HomeController extends Controller
         }
         
         $activeLang = $languages->firstWhere('slug', $lang);
-        
-        // Sorgu düzeltildi
-        $posts = Post::query()
-            ->select([
-                'id',
-                'category_id',
-                'order',
-                'cover_image',
-                'status'
-            ])
-            ->where('status', 'published')
-            ->with([
-                'translations' => fn($q) => $q->where('language_slug', $lang),
-                'category' => fn($q) => $q->select(['id'])
-                    ->with([
-                        'translations' => fn($q) => $q->where('language_slug', $lang)
-                    ])
-            ])
-            ->orderBy('order', 'asc')
-            ->latest()
-            ->get();
+    
+        $posts = Post::with([
+            'translations' => fn($q) => $q->where('language_slug', $lang)
+        ])->latest()->get();
     
         return view('frontend.home', compact('posts', 'lang', 'languages', 'activeLang'));
     }
