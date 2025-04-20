@@ -94,6 +94,11 @@
                                     class="inline-block bg-primary/10 text-primary px-3 py-1 rounded-full text-sm font-medium">
                                     {{ $post->category->translations->first()->name ?? '' }}
                                 </a>
+
+                                <div
+                                    class="inline-block bg-primary/10 text-primary px-3 py-1 rounded-full text-sm font-medium">
+                                    {{ $post->translations->first()->updated_at->format('d.m.Y') ?? '' }}
+                                </div>
                             </div>
                         @endif
 

@@ -10,7 +10,7 @@ class Category extends Model
 {
     protected $fillable = [];
 
-    public function translations(): HasMany
+    public function translationsFrontend(): HasMany
     {
         return $this
             ->hasMany(CategoryTranslation::class, 'category_id')
@@ -20,6 +20,11 @@ class Category extends Model
                 'name',
                 'slug'
             ]);
+    }
+
+    public function translations()
+    {
+        return $this->hasMany(CategoryTranslation::class);
     }
 
     public function posts()

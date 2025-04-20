@@ -2,8 +2,8 @@
 
 namespace App\Models;
 
-use Illuminate\Database\Eloquent\Model;
 use Illuminate\Database\Eloquent\Relations\HasMany;
+use Illuminate\Database\Eloquent\Model;
 
 class Post extends Model
 {
@@ -24,9 +24,15 @@ class Post extends Model
         'comment_enabled' => 'boolean',
     ];
 
-    public function translations(): HasMany
+    public function translations()
     {
-        return $this->hasMany(PostTranslation::class, 'post_id')
+        return $this->hasMany(PostTranslation::class);
+    }
+
+    public function translationsFrontend(): HasMany
+    {
+        return $this
+            ->hasMany(PostTranslation::class, 'post_id')
             ->select([
                 'id',
                 'post_id',

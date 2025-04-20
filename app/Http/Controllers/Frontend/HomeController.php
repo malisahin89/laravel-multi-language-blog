@@ -18,29 +18,11 @@ class HomeController extends Controller
         return redirect()->route('frontend.home', ['lang' => $defaultLang]);
     }
 
-    private function validateLanguage($lang)
-    {
-        $languages = Language::where('status', 1)->pluck('slug')->toArray();
-
-        if (!in_array($lang, $languages)) {
-            abort(404, 'Invalid language code');
-        }
-    }
-
     public function index($lang = null)
     {
-        $languages = Language::where('status', 1)->get();
-        
-        // Eğer $lang yoksa varsayılanı bul
-        $lang = $lang ?? $languages->firstWhere('is_default', 1)?->slug ?? 'tr';
-        
-        // Dil kodunu kontrol et
-        if ($lang) {
-            $this->validateLanguage($lang);
-        }
-        
-        $activeLang = $languages->firstWhere('slug', $lang);
-        
+        // buraya dön geri
+        $lang = $lang ?? 'tr';
+
         // Sorgu düzeltildi
         $posts = Post::query()
             ->select([
@@ -53,7 +35,8 @@ class HomeController extends Controller
             ->where('status', 'published')
             ->with([
                 'translations' => fn($q) => $q->where('language_slug', $lang),
-                'category' => fn($q) => $q->select(['id'])
+                'category' => fn($q) => $q
+                    ->select(['id'])
                     ->with([
                         'translations' => fn($q) => $q->where('language_slug', $lang)
                     ])
@@ -61,7 +44,7 @@ class HomeController extends Controller
             ->orderBy('order', 'asc')
             ->latest()
             ->get();
-    
-        return view('frontend.home', compact('posts', 'lang', 'languages', 'activeLang'));
+
+        return view('frontend.home', compact('posts', 'lang'));
     }
 }

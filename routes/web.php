@@ -5,22 +5,22 @@ use App\Http\Controllers\Admin\LanguageController;
 use App\Http\Controllers\Blog\CategoryController;
 use App\Http\Controllers\Blog\PostController;
 use App\Http\Controllers\Blog\TagController;
+use App\Http\Controllers\ProfileController;
+
 use App\Http\Controllers\Frontend\HomeController;
 use App\Http\Controllers\Frontend\PostController as FrontendPostController;
-use App\Http\Controllers\ProfileController;
-use App\Models\Language;
+use App\Http\Controllers\Frontend\TagController as FrontendTagController;
+use App\Http\Controllers\Frontend\CategoryController as FrontendCategoryController;
+
 use Illuminate\Support\Facades\Route;
 
 Route::get('/', [HomeController::class, 'index'])->name('frontend.home.withoutlang');
-Route::get('/test', function () {
-    return generateUniqueFilePath('uploads/images', 'photo', 'webp');
-});
 
 Route::group(['prefix' => '{lang}', 'where' => ['lang' => '[a-z]{2}']], function () {
     Route::get('/', [HomeController::class, 'index'])->name('frontend.home');
     Route::get('/post/{slug}', [FrontendPostController::class, 'show'])->name('frontend.post.show');
-    Route::get('/category/{slug}', [FrontendPostController::class, 'category'])->name('frontend.category');
-    Route::get('/tag/{slug}', [FrontendPostController::class, 'tag'])->name('frontend.tag');
+    Route::get('/category/{slug}', [FrontendCategoryController::class, 'show'])->name('frontend.category');
+    Route::get('/tag/{slug}', [FrontendTagController::class, 'show'])->name('frontend.tag');
 });
 
 Route::prefix('admin')->middleware(['auth', 'verified'])->group(function () {
