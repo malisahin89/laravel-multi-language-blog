@@ -28,10 +28,7 @@ Geliştirilecek çok fazla şey var bende farkındayım.
 - ✅ Modern olmayan yapay zeka kullanılarak yapılmış Tailwind UI/UX tasarımı
 - ✅ Resim yükleme için "generateUniqueFilePath" ve "convertToWebP" fonksiyonları kullandım, Helpers içinde kendileri
 - ❌ Yorum sistemi (vakit bulamadım)
-- ❌ Etiket sayfası Controller kodu çok saçma (vakit bulamadım)
-- ❌ Kategori sayfası Controller kodu çok saçma (vakit bulamadım)
 - ❌ Cache eklemedim (Kodu veritabanı yapısı için yazdım ,vakit bulamadım)
-- ❌ Sorguları düzenlemedim (Kodu veritabanı yapısı için yazdım ,vakit bulamadım)
 - ❌ Dil seçimini slug üzerinden yaptım (Kodu veritabanı yapısı için yazdım ,vakit bulamadım)
 - ❌ Düzgün bir veritabanı yapısı ile panel oluşturmak istedim, başlamışken bu hale geldi
 

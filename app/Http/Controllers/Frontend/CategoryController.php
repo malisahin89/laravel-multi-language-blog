@@ -3,6 +3,7 @@
 namespace App\Http\Controllers\Frontend;
 
 use App\Http\Controllers\Controller;
+use App\Models\Post;
 use App\Models\Category;
 use App\Models\CategoryTranslation;
 use App\Traits\LanguageValidator;

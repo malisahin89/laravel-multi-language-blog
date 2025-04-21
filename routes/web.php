@@ -18,7 +18,7 @@ Route::get('/', [HomeController::class, 'index'])->name('frontend.home.withoutla
 
 Route::group(['prefix' => '{lang}', 'where' => ['lang' => '[a-z]{2}']], function () {
     Route::get('/', [HomeController::class, 'index'])->name('frontend.home');
-    Route::get('/post/{slug}', [FrontendPostController::class, 'show'])->name('frontend.post.show');
+    Route::get('/blog/{slug}', [FrontendPostController::class, 'show'])->name('frontend.post.show');
     Route::get('/category/{slug}', [FrontendCategoryController::class, 'show'])->name('frontend.category');
     Route::get('/tag/{slug}', [FrontendTagController::class, 'show'])->name('frontend.tag');
 });
