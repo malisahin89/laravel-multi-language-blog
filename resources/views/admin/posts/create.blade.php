@@ -121,6 +121,7 @@
             <h2 class="text-xl font-semibold mb-4">Çoklu Dil İçeriği</h2>
 
             @foreach ($languages as $lang)
+            @if ($lang->is_default === 1)
                 <div class="border border-gray-200 rounded-lg p-4 space-y-3 bg-gray-50">
                     <h3 class="text-lg font-semibold text-gray-700">{{ strtoupper($lang->name) }}</h3>
 
@@ -180,6 +181,7 @@
                         </div>
                     </div>
                 </div>
+            @endif
             @endforeach
         </div>
 

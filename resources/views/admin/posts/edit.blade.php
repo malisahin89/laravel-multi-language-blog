@@ -143,6 +143,8 @@
                         $translation = $post->translations->where('language_slug', $lang->slug)->first();
                     @endphp
 
+                     @if ( (empty($language) && $lang->is_default === 1) || (!empty($language) && $lang->slug === $language->slug) )
+
                     <div class="border border-gray-200 rounded-lg p-4 space-y-3 bg-gray-50">
                         <h3 class="text-lg font-semibold text-gray-700">{{ strtoupper($lang->name) }}</h3>
 
@@ -207,6 +209,7 @@
                             </div>
                         </div>
                     </div>
+                    @endif
                 @endforeach
             </div>
 

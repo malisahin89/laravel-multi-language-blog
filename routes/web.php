@@ -39,10 +39,12 @@ Route::prefix('admin')->middleware(['auth', 'verified'])->group(function () {
     Route::get('posts/create', [PostController::class, 'create'])->name('posts.create');
     Route::post('posts', [PostController::class, 'store'])->name('posts.store');
     Route::get('posts/{id}/edit', [PostController::class, 'edit'])->name('posts.edit');
+    Route::get('posts/{id}/edit/{language}', [PostController::class, 'editLang'])->name('posts.editLang');
     Route::put('posts/{id}', [PostController::class, 'update'])->name('posts.update');
     Route::delete('posts/{id}', [PostController::class, 'destroy'])->name('posts.destroy');
     Route::post('posts/{id}/removeGalleryImage', [PostController::class, 'removeGalleryImage'])->name('posts.removeGalleryImage');
     Route::post('posts/{id}/saveGalleryOrder', [PostController::class, 'saveGalleryOrder'])->name('posts.saveGalleryOrder');
+    Route::post('posts/{id}/status', [PostController::class, 'updateStatus'])->name('posts.status');
 
     // CATEGORIES
     Route::get('categories', [CategoryController::class, 'index'])->name('categories.index');

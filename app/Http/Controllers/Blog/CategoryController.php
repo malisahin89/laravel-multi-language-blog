@@ -13,7 +13,8 @@ class CategoryController extends Controller
     public function index()
     {
         $categories = Category::with('translations')->get();
-        return view('admin.categories.index', compact('categories'));
+        $lang = Language::where('is_default', 1)->value('slug') ?? 'tr';
+        return view('admin.categories.index', compact('categories', 'lang'));
     }
 
     public function create()

@@ -15,8 +15,24 @@ class PostController extends Controller
 {
     public function index()
     {
-        $posts = Post::with(['translations', 'category.translations', 'tags.translations'])->latest()->paginate(10);
-        return view('admin.posts.index', compact('posts'));
+        $languages = Language::all();
+        $lang = Language::where('is_default', 1)->value('slug') ?? 'tr';
+        $posts = Post::query()
+            ->select([
+                'id',
+                'category_id',
+                'order',
+                'status'
+            ])
+            ->with([
+                'translations' => fn($q) => $q->select('id', 'post_id', 'language_slug', 'title', 'slug'),
+                'translations.language' => fn($q) => $q->select('id', 'slug', 'flag')
+            ])
+            ->latest()
+            ->paginate(10);
+
+        // $posts = Post::with(['translations', 'category.translations', 'tags.translations'])->latest()->paginate(20);
+        return view('admin.posts.index', compact('posts', 'lang', 'languages'));
     }
 
     public function create()
@@ -51,41 +67,39 @@ class PostController extends Controller
 
             if ($request->hasFile('cover_image')) {
                 $file = $request->file('cover_image');
-                $originalName = pathinfo($file->getClientOriginalName(), PATHINFO_FILENAME); // Örn: photo
-            
+                $originalName = pathinfo($file->getClientOriginalName(), PATHINFO_FILENAME);  // Örn: photo
+
                 // Benzersiz path oluştur
                 $uniqueFullPath = generateUniqueFilePath(public_path('uploads/posts'), $originalName, 'webp');
-            
+
                 // public_path kısmını kırp, sadece 'uploads/posts/...' haline getir
                 $relativePath = str_replace(public_path() . DIRECTORY_SEPARATOR, '', $uniqueFullPath);
-            
+
                 // WebP formatına dönüştür
                 convertToWebP($file, $relativePath);
-            
+
                 // Veritabanı için yolu kaydet
                 $post->cover_image = $relativePath;
             }
-            
 
             if ($request->hasFile('gallery_images')) {
                 $existingImages = $post->gallery_images ?? [];
-            
+
                 foreach ($request->file('gallery_images') as $file) {
-                    $originalName = pathinfo($file->getClientOriginalName(), PATHINFO_FILENAME); // 'photo'
+                    $originalName = pathinfo($file->getClientOriginalName(), PATHINFO_FILENAME);  // 'photo'
                     $uniqueFullPath = generateUniqueFilePath(public_path('uploads/gallery'), $originalName, 'webp');
-            
+
                     // Tam path'ten sadece alt yolu alalım (public_path() kısmını çıkaralım)
                     $relativePath = str_replace(public_path() . DIRECTORY_SEPARATOR, '', $uniqueFullPath);
-            
+
                     // WebP'ye dönüştür
                     convertToWebP($file, $relativePath);
-            
+
                     $existingImages[] = $relativePath;
                 }
-            
+
                 $post->gallery_images = $existingImages;
             }
-            
 
             $post->save();
 
@@ -131,6 +145,18 @@ class PostController extends Controller
         return view('admin.posts.edit', compact('post', 'languages', 'categories', 'tags'));
     }
 
+    public function editLang($id, $language)
+    {
+        $post = Post::with(['translations', 'category.translations', 'tags.translations'])->findOrFail($id);
+        $languages = Language::all();
+        $categories = Category::with('translations')->get();
+        $tags = Tag::with('translations')->get();
+        $language = Language::where('slug', $language)->first();
+
+
+        return view('admin.posts.edit', compact('post', 'languages', 'categories', 'tags', 'language'));
+    }
+
     public function update(Request $request, $id)
     {
         $validationRules = [
@@ -171,39 +197,38 @@ class PostController extends Controller
                 if ($post->cover_image && file_exists(public_path($post->cover_image))) {
                     @unlink(public_path($post->cover_image));
                 }
-            
+
                 $file = $request->file('cover_image');
-                $originalName = pathinfo($file->getClientOriginalName(), PATHINFO_FILENAME); // örn: photo
-            
+                $originalName = pathinfo($file->getClientOriginalName(), PATHINFO_FILENAME);  // örn: photo
+
                 // Benzersiz .webp dosya yolu oluştur
                 $uniqueFullPath = generateUniqueFilePath(public_path('uploads/posts'), $originalName, 'webp');
                 $relativePath = str_replace(public_path() . DIRECTORY_SEPARATOR, '', $uniqueFullPath);
-            
+
                 // WebP'ye dönüştür ve kaydet
                 convertToWebP($file, $relativePath);
-            
+
                 $post->cover_image = $relativePath;
             }
-            
+
             if ($request->hasFile('gallery_images')) {
                 $existingImages = $post->gallery_images ?? [];
-            
+
                 foreach ($request->file('gallery_images') as $file) {
                     $originalName = pathinfo($file->getClientOriginalName(), PATHINFO_FILENAME);
-            
+
                     // Benzersiz .webp yolu oluştur
                     $uniqueFullPath = generateUniqueFilePath(public_path('uploads/gallery'), $originalName, 'webp');
                     $relativePath = str_replace(public_path() . DIRECTORY_SEPARATOR, '', $uniqueFullPath);
-            
+
                     // WebP'ye dönüştür ve kaydet
                     convertToWebP($file, $relativePath);
-            
+
                     $existingImages[] = $relativePath;
                 }
-            
+
                 $post->gallery_images = $existingImages;
             }
-            
 
             $post->save();
 
@@ -242,6 +267,15 @@ class PostController extends Controller
             DB::rollBack();
             return back()->with('error', 'Güncelleme işlemi başarısız: ' . $e->getMessage());
         }
+    }
+
+    public function updateStatus(Request $request, $id)
+    {
+        $post = Post::findOrFail($id);
+        $post->status = $request->status;
+        $post->save();
+
+        return redirect()->back()->with('success', 'Status başarıyla güncellendi');
     }
 
     public function removeGalleryImage(Request $request, $id)

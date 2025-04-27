@@ -25,7 +25,9 @@
                             <td class="px-4 py-2">{{ $category->id }}</td>
                             <td class="px-4 py-2">
                                 @foreach($category->translations as $trans)
+                                @if($trans->language_slug == $lang)
                                     <div><span class="font-semibold">{{ strtoupper($trans->language_slug) }}:</span> {{ $trans->name }}</div>
+                                @endif
                                 @endforeach
                             </td>
                             <td class="px-4 py-2 text-center space-x-2">

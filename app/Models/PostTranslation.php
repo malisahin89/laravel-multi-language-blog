@@ -20,8 +20,15 @@ class PostTranslation extends Model
         'seo_keywords',
     ];
 
+    
+
     public function post()
     {
         return $this->belongsTo(Post::class);
+    }
+
+    public function language()
+    {
+        return $this->belongsTo(Language::class, 'language_slug', 'slug');
     }
 }

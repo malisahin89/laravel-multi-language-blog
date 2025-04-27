@@ -17,7 +17,7 @@
                         <th class="px-4 py-2 text-left">ID</th>
                         <th class="px-4 py-2 text-left">Diller</th>
                         <th class="px-4 py-2 text-left">Kategoriler</th>
-                        <th class="px-4 py-2 text-left">Etiketler</th>
+                        <th class="px-4 py-2 text-left">Diller</th>
                         <th class="px-4 py-2 text-center">İşlemler</th>
                     </tr>
                 </thead>
@@ -27,11 +27,8 @@
                             <td class="px-4 py-2">{{ $post->id }}</td>
 
                             <td class="px-4 py-2">
-                                @if ($post->translations->isNotEmpty())
-                                    @foreach ($post->translations as $trans)
-                                        <div><strong>{{ strtoupper($trans->language_slug) }}:</strong> {{ $trans->title }}
-                                        </div>
-                                    @endforeach
+                                @if ($post->translations->where('language_slug', $lang)->first()?->title)
+                                    {{ $post->translations->where('language_slug', $lang)->first()?->title }}
                                 @else
                                     <div class="text-gray-500">No translations available</div>
                                 @endif
@@ -39,30 +36,40 @@
 
                             <td class="px-4 py-2">
                                 @if ($post->category && $post->category->translations->isNotEmpty())
-                                    {{ $post->category->translations->where('language_slug', 'tr')->first()?->name }}
+                                    {{ $post->category->translations->where('language_slug', $lang)->first()?->name }}
                                 @else
                                     <div class="text-gray-500">No category</div>
                                 @endif
                             </td>
 
                             <td class="px-4 py-2">
-                                @if ($post->tags->isNotEmpty())
-                                    @foreach ($post->tags as $tag)
-                                        @if ($tag->translations->isNotEmpty())
-                                            <div
-                                                class="inline-block bg-blue-100 text-blue-800 text-xs px-2 py-1 rounded mb-1">
-                                                {{ $tag->translations->first()->name }}
-                                            </div>
-                                        @endif
-                                    @endforeach
-                                @else
-                                    <div class="text-gray-500">No tags</div>
-                                @endif
+                                @foreach ($languages as $language)
+                                    @php
+                                        $hasTranslation = $post->translations
+                                            ->where('language_slug', $language->slug)
+                                            ->isNotEmpty();
+                                    @endphp
+                                    <a href="{{ route('posts.editLang', [$post->id, $language->slug]) }}"
+                                        class="text-blue-600 hover:underline">
+                                        <div
+                                            class="inline-block {{ $hasTranslation ? 'bg-blue-100 text-blue-800' : 'bg-red-100 text-red-800' }} text-xs px-2 py-1 rounded mb-1">
+                                            {{ $language->slug }}
+                                        </div>
+                                    </a>
+                                @endforeach
                             </td>
 
                             <td class="px-4 py-2 text-center space-x-2">
                                 <a href="{{ route('posts.edit', $post->id) }}"
                                     class="text-blue-600 hover:underline">Düzenle</a>
+                                <form action="{{ route('posts.status', $post->id) }}" method="POST" class="inline-block">
+                                    @csrf
+                                    <button type="submit"
+                                        class="px-2 py-1 rounded {{ $post->status === 'published' ? 'bg-green-500 text-white' : 'bg-gray-500 text-white' }} hover:opacity-90"
+                                        name="status" value="{{ $post->status === 'published' ? 'draft' : 'published' }}">
+                                        {{ $post->status === 'published' ? 'Yayında' : 'Taslak' }}
+                                    </button>
+                                </form>
 
                                 <form action="{{ route('posts.destroy', $post->id) }}" method="POST" class="inline-block"
                                     onsubmit="return confirm('Silmek istiyor musun?')">
@@ -81,6 +88,7 @@
                     @endif
                 </tbody>
             </table>
+            {{ $posts->links() }}
         </div>
     </div>
 @endsection
