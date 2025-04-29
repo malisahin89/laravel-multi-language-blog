@@ -30,13 +30,14 @@
 </head>
 
 <body class="bg-gray-50 antialiased">
+
     {{-- Header --}}
     <header class="bg-white/80 backdrop-blur-sm border-b sticky top-0 z-50">
         <nav class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
             <div class="flex justify-between items-center h-16">
                 <a href="/{{ $lang }}"
                     class="text-2xl font-bold text-gray-900 hover:text-primary transition-colors">
-                    🌍 Multiblog
+                    🌍 Multiblog 
                 </a>
 
                 {{-- Language Switcher --}}
@@ -56,19 +57,19 @@
                         x-transition:leave-end="transform opacity-0 scale-95" @click.away="open = false"
                         class="absolute right-0 mt-2 w-48 bg-white border rounded-xl shadow-lg overflow-hidden z-50">
                         @php
-                            $currentPath = base64_encode(request()->path()); // güvenli encode
+                            $currentPath = base64_encode(request()->path());
                         @endphp
-                
+
                         @foreach ($languages as $l)
-                            @if($l->slug !== $lang)
+                            @if ($l->slug !== $lang)
                                 <a href="{{ route('language.switch', ['lang' => $l->slug, 'encodedPath' => $currentPath]) }}"
-                                   class="flex items-center px-4 py-3 hover:bg-gray-50 transition-colors">
-                                    <img src="https://flagcdn.com/{{ $l->flag }}.svg" class="w-5 h-3.5 mr-3 rounded-sm"
-                                        alt="{{ $l->name }}">
+                                    rel="nofollow"
+                                    class="flex items-center px-4 py-3 hover:bg-gray-50 transition-colors">
+                                    <img src="https://flagcdn.com/{{ $l->flag }}.svg"
+                                        class="w-5 h-3.5 mr-3 rounded-sm" alt="{{ $l->name }}">
                                     <span class="text-gray-700">{{ $l->name }}</span>
                                 </a>
                             @endif
-
                         @endforeach
                     </div>
                 </div>
@@ -76,6 +77,7 @@
             </div>
         </nav>
     </header>
+
 
     {{-- Main Content --}}
     <main class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-8">
