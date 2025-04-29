@@ -12,6 +12,7 @@
         }
     </style>
      @vite(['resources/css/app.css', 'resources/js/app.js']) {{-- Tailwind ve Alpine --}}
+     @stack('styles')
 </head>
 
 <body class="bg-gray-100 text-gray-800">
@@ -102,7 +103,7 @@
             </main>
         </div>
     </div>
-    @yield('scripts')
+    @stack('scripts')
 </body>
 
 </html>

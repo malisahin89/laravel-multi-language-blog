@@ -143,72 +143,72 @@
                         $translation = $post->translations->where('language_slug', $lang->slug)->first();
                     @endphp
 
-                     @if ( (empty($language) && $lang->is_default === 1) || (!empty($language) && $lang->slug === $language->slug) )
+                    @if ((empty($language) && $lang->is_default === 1) || (!empty($language) && $lang->slug === $language->slug))
+                        <div class="border border-gray-200 rounded-lg p-4 space-y-3 bg-gray-50">
+                            <h3 class="text-lg font-semibold text-gray-700">{{ strtoupper($lang->name) }}</h3>
 
-                    <div class="border border-gray-200 rounded-lg p-4 space-y-3 bg-gray-50">
-                        <h3 class="text-lg font-semibold text-gray-700">{{ strtoupper($lang->name) }}</h3>
-
-                        <!-- Başlık -->
-                        <div class="space-y-1">
-                            <label class="block text-gray-700">Başlık:</label>
-                            <input type="text" name="translations[{{ $lang->slug }}][title]"
-                                value="{{ $translation?->title }}"
-                                class="w-full px-3 py-2 border rounded-lg focus:ring-2 focus:ring-blue-500"
-                                placeholder="Başlık girin">
-                        </div>
-
-                        <!-- Slug -->
-                        <div class="space-y-1">
-                            <label class="block text-gray-700">Slug:</label>
-                            <input type="text" name="translations[{{ $lang->slug }}][slug]"
-                                value="{{ $translation?->slug }}"
-                                class="w-full px-3 py-2 border rounded-lg focus:ring-2 focus:ring-blue-500"
-                                placeholder="SEO dostu URL">
-                        </div>
-
-                        <!-- Kısa Açıklama -->
-                        <div class="space-y-1">
-                            <label class="block text-gray-700">Kısa Açıklama:</label>
-                            <textarea name="translations[{{ $lang->slug }}][short_description]"
-                                class="w-full px-3 py-2 border rounded-lg focus:ring-2 focus:ring-blue-500" rows="3"
-                                placeholder="Özet bilgi">{{ $translation?->short_description }}</textarea>
-                        </div>
-
-                        <!-- İçerik -->
-                        <div class="space-y-1">
-                            <label class="block text-gray-700">İçerik:</label>
-                            <textarea name="translations[{{ $lang->slug }}][content]"
-                                class="w-full px-3 py-2 border rounded-lg focus:ring-2 focus:ring-blue-500" rows="6"
-                                placeholder="Detaylı içerik">{{ $translation?->content }}</textarea>
-                        </div>
-
-                        <!-- SEO Alanları -->
-                        <div class="grid grid-cols-1 md:grid-cols-3 gap-4">
+                            <!-- Başlık -->
                             <div class="space-y-1">
-                                <label class="block text-gray-700">SEO Başlık:</label>
-                                <input type="text" name="translations[{{ $lang->slug }}][seo_title]"
-                                    value="{{ $translation?->seo_title }}"
+                                <label class="block text-gray-700">Başlık:</label>
+                                <input type="text" name="translations[{{ $lang->slug }}][title]"
+                                    value="{{ $translation?->title }}"
                                     class="w-full px-3 py-2 border rounded-lg focus:ring-2 focus:ring-blue-500"
-                                    placeholder="Meta title">
+                                    placeholder="Başlık girin">
                             </div>
 
+                            <!-- Slug -->
                             <div class="space-y-1">
-                                <label class="block text-gray-700">SEO Açıklama:</label>
-                                <input type="text" name="translations[{{ $lang->slug }}][seo_description]"
-                                    value="{{ $translation?->seo_description }}"
+                                <label class="block text-gray-700">Slug:</label>
+                                <input type="text" name="translations[{{ $lang->slug }}][slug]"
+                                    value="{{ $translation?->slug }}"
                                     class="w-full px-3 py-2 border rounded-lg focus:ring-2 focus:ring-blue-500"
-                                    placeholder="Meta description">
+                                    placeholder="SEO dostu URL">
                             </div>
 
+                            <!-- Kısa Açıklama -->
                             <div class="space-y-1">
-                                <label class="block text-gray-700">SEO Anahtar Kelimeler:</label>
-                                <input type="text" name="translations[{{ $lang->slug }}][seo_keywords]"
-                                    value="{{ $translation?->seo_keywords }}"
-                                    class="w-full px-3 py-2 border rounded-lg focus:ring-2 focus:ring-blue-500"
-                                    placeholder="Meta keywords">
+                                <label class="block text-gray-700">Kısa Açıklama:</label>
+                                <textarea name="translations[{{ $lang->slug }}][short_description]"
+                                    class="w-full px-3 py-2 border rounded-lg focus:ring-2 focus:ring-blue-500" rows="3"
+                                    placeholder="Özet bilgi">{{ $translation?->short_description }}</textarea>
+                            </div>
+
+
+                            <!-- İçerik -->
+                            <div class="space-y-1">
+                                <label class="block text-gray-700">İçerik:</label>
+                                <textarea name="translations[{{ $lang->slug }}][content]"
+                                    class="w-full px-3 py-2 border rounded-lg focus:ring-2 focus:ring-blue-500" rows="6"
+                                    placeholder="Detaylı içerik" id="content" spellcheck="false" autocomplete="off">{{ $translation?->content }}</textarea>
+                            </div>
+
+                            <!-- SEO Alanları -->
+                            <div class="grid grid-cols-1 md:grid-cols-3 gap-4">
+                                <div class="space-y-1">
+                                    <label class="block text-gray-700">SEO Başlık:</label>
+                                    <input type="text" name="translations[{{ $lang->slug }}][seo_title]"
+                                        value="{{ $translation?->seo_title }}"
+                                        class="w-full px-3 py-2 border rounded-lg focus:ring-2 focus:ring-blue-500"
+                                        placeholder="Meta title">
+                                </div>
+
+                                <div class="space-y-1">
+                                    <label class="block text-gray-700">SEO Açıklama:</label>
+                                    <input type="text" name="translations[{{ $lang->slug }}][seo_description]"
+                                        value="{{ $translation?->seo_description }}"
+                                        class="w-full px-3 py-2 border rounded-lg focus:ring-2 focus:ring-blue-500"
+                                        placeholder="Meta description">
+                                </div>
+
+                                <div class="space-y-1">
+                                    <label class="block text-gray-700">SEO Anahtar Kelimeler:</label>
+                                    <input type="text" name="translations[{{ $lang->slug }}][seo_keywords]"
+                                        value="{{ $translation?->seo_keywords }}"
+                                        class="w-full px-3 py-2 border rounded-lg focus:ring-2 focus:ring-blue-500"
+                                        placeholder="Meta keywords">
+                                </div>
                             </div>
                         </div>
-                    </div>
                     @endif
                 @endforeach
             </div>
@@ -220,35 +220,61 @@
             </button>
         </form>
     </div>
-    @section('scripts')
-    <script src="https://cdn.jsdelivr.net/npm/sortablejs/Sortable.min.js"></script>
-    <script>
-        // Kapak Fotoğrafı Önizleme
-        function previewCover(event) {
-            const reader = new FileReader();
-            reader.onload = function() {
-                const preview = document.getElementById('cover-preview');
-                if (preview) {
-                    preview.src = reader.result;
-                    preview.parentElement.classList.remove('hidden');
-                }
-            };
-            if (event.target.files[0]) {
-                reader.readAsDataURL(event.target.files[0]);
+
+    @push('styles')
+        <script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
+        <link href="https://cdn.jsdelivr.net/npm/summernote@0.8.18/dist/summernote-lite.min.css" rel="stylesheet">
+        <style>
+            .sortable-ghost {
+                opacity: 0.5;
+                background: #c8ebfb;
             }
-        }
+        </style>
+    @endpush
 
-        // Galeri Yönetimi
-        function previewGallery(event) {
-            const files = event.target.files;
-            const previewContainer = document.getElementById('gallery-preview');
-
-            for (let file of files) {
+    @push('scripts')
+        <script src="https://cdn.jsdelivr.net/npm/summernote@0.8.18/dist/summernote-lite.min.js"></script>
+        <script src="https://cdn.jsdelivr.net/npm/sortablejs/Sortable.min.js"></script>
+        <script>
+            $('#content').summernote({
+                height: 400,
+                toolbar: [
+                    ['style', ['style']],
+                    ['font', ['bold', 'italic', 'underline', 'clear']],
+                    ['fontname', ['fontname']],
+                    ['color', ['color']],
+                    ['para', ['ul', 'ol', 'paragraph']],
+                    ['table', ['table']],
+                    ['insert', ['link', 'video']],
+                    ['view', ['codeview']]
+                ]
+            });
+            // Kapak Fotoğrafı Önizleme
+            function previewCover(event) {
                 const reader = new FileReader();
-                reader.onload = function(e) {
-                    const div = document.createElement('div');
-                    div.className = 'relative group';
-                    div.innerHTML = `
+                reader.onload = function() {
+                    const preview = document.getElementById('cover-preview');
+                    if (preview) {
+                        preview.src = reader.result;
+                        preview.parentElement.classList.remove('hidden');
+                    }
+                };
+                if (event.target.files[0]) {
+                    reader.readAsDataURL(event.target.files[0]);
+                }
+            }
+
+            // Galeri Yönetimi
+            function previewGallery(event) {
+                const files = event.target.files;
+                const previewContainer = document.getElementById('gallery-preview');
+
+                for (let file of files) {
+                    const reader = new FileReader();
+                    reader.onload = function(e) {
+                        const div = document.createElement('div');
+                        div.className = 'relative group';
+                        div.innerHTML = `
                         <img src="${e.target.result}" class="w-full h-32 object-cover rounded-lg shadow">
                         <button 
                             type="button" 
@@ -257,83 +283,80 @@
                             ✕
                         </button>
                     `;
-                    previewContainer.appendChild(div);
-                };
-                reader.readAsDataURL(file);
-            }
-        }
-
-        // Mevcut Galeri Resimlerini Silme
-        function removeGalleryImage(element) {
-            if (confirm('Bu resmi galeriden kaldırmak istediğinize emin misiniz?')) {
-                const imagePath = element.dataset.image;
-                
-                // Resmi sunucudan sil
-                fetch('{{ route('posts.removeGalleryImage', $post->id) }}', {
-                    method: 'POST',
-                    headers: {
-                        'Content-Type': 'application/json',
-                        'X-CSRF-TOKEN': '{{ csrf_token() }}'
-                    },
-                    body: JSON.stringify({ image: imagePath })
-                })
-                .then(response => response.json())
-                .then(data => {
-                    if (data.success) {
-                        // Resmi UI'dan kaldır
-                        element.remove();
-                    } else {
-                        alert('Resim silinirken bir hata oluştu');
-                    }
-                })
-                .catch(error => {
-                    console.error('Error:', error);
-                    alert('Resim silinirken bir hata oluştu');
-                });
-            }
-        }
-
-        // Sıralama için Sortable.js
-        document.addEventListener('DOMContentLoaded', function() {
-            const galleryPreview = document.getElementById('gallery-preview');
-            
-            new Sortable(galleryPreview, {
-                animation: 150,
-                ghostClass: 'sortable-ghost',
-                handle: '.group',
-                onEnd: function(evt) {
-                    // Sıralamayı kaydet
-                    const images = Array.from(galleryPreview.children);
-                    const order = images.map(img => img.dataset.image);
-                    
-                    fetch('{{ route('posts.saveGalleryOrder', $post->id) }}', {
-                        method: 'POST',
-                        headers: {
-                            'Content-Type': 'application/json',
-                            'X-CSRF-TOKEN': '{{ csrf_token() }}'
-                        },
-                        body: JSON.stringify({ order: order })
-                    })
-                    .then(response => response.json())
-                    .then(data => {
-                        if (!data.success) {
-                            alert('Sıralama kaydedilirken bir hata oluştu');
-                        }
-                    })
-                    .catch(error => {
-                        console.error('Error:', error);
-                        alert('Sıralama kaydedilirken bir hata oluştu');
-                    });
+                        previewContainer.appendChild(div);
+                    };
+                    reader.readAsDataURL(file);
                 }
-            });
-        });
-    </script>
+            }
 
-    <style>
-        .sortable-ghost {
-            opacity: 0.5;
-            background: #c8ebfb;
-        }
-    </style>
-@endsection
+            // Mevcut Galeri Resimlerini Silme
+            function removeGalleryImage(element) {
+                if (confirm('Bu resmi galeriden kaldırmak istediğinize emin misiniz?')) {
+                    const imagePath = element.dataset.image;
+
+                    // Resmi sunucudan sil
+                    fetch('{{ route('posts.removeGalleryImage', $post->id) }}', {
+                            method: 'POST',
+                            headers: {
+                                'Content-Type': 'application/json',
+                                'X-CSRF-TOKEN': '{{ csrf_token() }}'
+                            },
+                            body: JSON.stringify({
+                                image: imagePath
+                            })
+                        })
+                        .then(response => response.json())
+                        .then(data => {
+                            if (data.success) {
+                                // Resmi UI'dan kaldır
+                                element.remove();
+                            } else {
+                                alert('Resim silinirken bir hata oluştu');
+                            }
+                        })
+                        .catch(error => {
+                            console.error('Error:', error);
+                            alert('Resim silinirken bir hata oluştu');
+                        });
+                }
+            }
+
+            // Sıralama için Sortable.js
+            document.addEventListener('DOMContentLoaded', function() {
+                const galleryPreview = document.getElementById('gallery-preview');
+
+                new Sortable(galleryPreview, {
+                    animation: 150,
+                    ghostClass: 'sortable-ghost',
+                    handle: '.group',
+                    onEnd: function(evt) {
+                        // Sıralamayı kaydet
+                        const images = Array.from(galleryPreview.children);
+                        const order = images.map(img => img.dataset.image);
+
+                        fetch('{{ route('posts.saveGalleryOrder', $post->id) }}', {
+                                method: 'POST',
+                                headers: {
+                                    'Content-Type': 'application/json',
+                                    'X-CSRF-TOKEN': '{{ csrf_token() }}'
+                                },
+                                body: JSON.stringify({
+                                    order: order
+                                })
+                            })
+                            .then(response => response.json())
+                            .then(data => {
+                                if (!data.success) {
+                                    alert('Sıralama kaydedilirken bir hata oluştu');
+                                }
+                            })
+                            .catch(error => {
+                                console.error('Error:', error);
+                                alert('Sıralama kaydedilirken bir hata oluştu');
+                            });
+                    }
+                });
+            });
+        </script>
+    @endpush
 @endsection
