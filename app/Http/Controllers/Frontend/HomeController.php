@@ -20,10 +20,31 @@ class HomeController extends Controller
 
     public function index($lang = null)
     {
+        // return $lang;
         // buraya dön geri
         $lang = $lang ?? 'tr';
 
         // Sorgu düzeltildi
+        //  $posts = Post::query()
+        //     ->select([
+        //         'id',
+        //         'category_id',
+        //         'order',
+        //         'cover_image',
+        //         'status'
+        //     ])
+        //     ->where('status', 'published')
+        //     ->with([
+        //         'translations' => fn($q) => $q->where('language_slug', $lang),
+        //         'category' => fn($q) => $q
+        //             ->select(['id'])
+        //             ->with([
+        //                 'translations' => fn($q) => $q->where('language_slug', $lang)
+        //             ])
+        //     ])
+        //     ->orderBy('order', 'asc')
+        //     ->latest()
+        //     ->get();
         $posts = Post::query()
             ->select([
                 'id',
@@ -33,6 +54,9 @@ class HomeController extends Controller
                 'status'
             ])
             ->where('status', 'published')
+            ->whereHas('translations', function ($q) use ($lang) {
+                $q->where('language_slug', $lang);
+            })
             ->with([
                 'translations' => fn($q) => $q->where('language_slug', $lang),
                 'category' => fn($q) => $q

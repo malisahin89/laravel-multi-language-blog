@@ -43,18 +43,21 @@
                 <div class="relative group" x-data="{ open: false }" x-init="open = false">
                     <button @click="open = !open"
                         class="flex items-center space-x-1 px-4 py-2 rounded-lg hover:bg-gray-100 transition-colors">
-                        <img src="https://flagcdn.com/{{ $currentLanguage->flag }}.svg"
-                            class="w-6 h-4 rounded-sm shadow" alt="{{ $currentLanguage->name }}">
+                        <img src="https://flagcdn.com/{{ $currentLanguage->flag }}.svg" class="w-6 h-4 rounded-sm shadow"
+                            alt="{{ $currentLanguage->name }}">
                         <span class="text-gray-700 font-medium">{{ strtoupper($currentLanguage->name) }}</span>
                     </button>
-
-                    <div x-show="open" x-transition:enter="transition ease-out duration-100"
-                        x-transition:enter-start="transform opacity-0 scale-95"
-                        x-transition:enter-end="transform opacity-100 scale-100"
-                        x-transition:leave="transition ease-in duration-75"
-                        x-transition:leave-start="transform opacity-100 scale-100"
-                        x-transition:leave-end="transform opacity-0 scale-95" @click.away="open = false"
-                        class="absolute right-0 mt-2 w-48 bg-white border rounded-xl shadow-lg overflow-hidden z-50">
+                
+                    <div x-show="open"
+                         x-transition:enter="transition ease-out duration-100"
+                         x-transition:enter-start="transform opacity-0 scale-95"
+                         x-transition:enter-end="transform opacity-100 scale-100"
+                         x-transition:leave="transition ease-in duration-75"
+                         x-transition:leave-start="transform opacity-100 scale-100"
+                         x-transition:leave-end="transform opacity-0 scale-95"
+                         @click.away="open = false"
+                         class="absolute right-0 mt-2 w-48 bg-white border rounded-xl shadow-lg overflow-hidden z-50">
+                
                         @php
                             $currentPath = base64_encode(request()->path()); // güvenli encode
                         @endphp
@@ -68,11 +71,10 @@
                                     <span class="text-gray-700">{{ $l->name }}</span>
                                 </a>
                             @endif
-
                         @endforeach
                     </div>
                 </div>
-
+                
             </div>
         </nav>
     </header>

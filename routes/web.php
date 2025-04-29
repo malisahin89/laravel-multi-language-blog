@@ -8,6 +8,7 @@ use App\Http\Controllers\Blog\TagController;
 use App\Http\Controllers\ProfileController;
 
 use App\Http\Controllers\Frontend\HomeController;
+use App\Http\Controllers\Frontend\LanguageChangeController;
 use App\Http\Controllers\Frontend\PostController as FrontendPostController;
 use App\Http\Controllers\Frontend\TagController as FrontendTagController;
 use App\Http\Controllers\Frontend\CategoryController as FrontendCategoryController;
@@ -15,6 +16,8 @@ use App\Http\Controllers\Frontend\CategoryController as FrontendCategoryControll
 use Illuminate\Support\Facades\Route;
 
 Route::get('/', [HomeController::class, 'index'])->name('frontend.home.withoutlang');
+Route::get('change-lang/{lang}/{encodedPath}', [LanguageChangeController::class, 'switch'])->name('language.switch');
+
 
 Route::group(['prefix' => '{lang}', 'where' => ['lang' => '[a-z]{2}']], function () {
     Route::get('/', [HomeController::class, 'index'])->name('frontend.home');
