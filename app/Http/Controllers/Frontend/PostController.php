@@ -16,18 +16,10 @@ class PostController extends Controller
 
     public function show($lang = null, $slug)
     {
-        // $language = Language::all();
-        // if ($lang) {
-        //     $this->validateLanguage($lang);
-        // }
-        // return $lang;
-
-        // Tüm dilleri çek
         $languages = Language::all();
 
-        // Geçerli dili al (örneğin 'tr')
         if ($lang) {
-            $this->validateLanguage($lang);  // mevcutsa kontrol
+            $this->validateLanguage($lang);
             $currentLanguage = $languages->firstWhere('slug', $lang);
         } else {
             $currentLanguage = null;

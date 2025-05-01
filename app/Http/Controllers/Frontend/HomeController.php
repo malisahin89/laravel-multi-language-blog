@@ -19,7 +19,8 @@ class HomeController extends Controller
 
     public function index($lang = null)
     {
-        $lang = $lang ?? 'tr';
+        $this->validateLanguage($lang);
+        $langSlug = $lang ?? Language::where('is_default', 1)->value('slug');
 
         $posts = Post::query()
             ->select([
@@ -30,21 +31,21 @@ class HomeController extends Controller
                 'status'
             ])
             ->where('status', 'published')
-            ->whereHas('translations', function ($q) use ($lang) {
-                $q->where('language_slug', $lang);
+            ->whereHas('translations', function ($q) use ($langSlug) {
+                $q->where('language_slug', $langSlug);
             })
             ->with([
-                'translations' => fn($q) => $q->where('language_slug', $lang),
+                'translations' => fn($q) => $q->where('language_slug', $langSlug),
                 'category' => fn($q) => $q
                     ->select(['id'])
                     ->with([
-                        'translations' => fn($q) => $q->where('language_slug', $lang)
+                        'translations' => fn($q) => $q->where('language_slug', $langSlug)
                     ])
             ])
             ->orderBy('order', 'asc')
             ->latest()
             ->get();
 
-        return view('frontend.home', compact('posts', 'lang'));
+        return view('frontend.home', compact('posts', 'langSlug'));
     }
 }

@@ -20,7 +20,7 @@
                         <!-- Kategori gösterimi -->
                         @if ($post->category && $post->category->translations->isNotEmpty())
                             <div class="mb-3">
-                                <a href="{{ route('frontend.category', [$lang, $post->category->translations->first()->slug ?? '']) }}"
+                                <a href="{{ route('frontend.category', [$langSlug, $post->category->translations->first()->slug ?? '']) }}"
                                     class="inline-block bg-primary/10 text-primary px-3 py-1 rounded-full text-sm font-medium">
                                     {{ $post->category->translations->first()->name ?? '' }}
                                 </a>
@@ -33,7 +33,7 @@
                         @endif
 
                         <h3 class="text-xl font-semibold mb-3">
-                            <a href="{{ route('frontend.post.show', [$lang, $post->translations->first()->slug ?? '']) }}"
+                            <a href="{{ route('frontend.post.show', [$langSlug, $post->translations->first()->slug ?? '']) }}"
                                 class="hover:text-primary transition-colors">
                                 {{ $post->translations->first()->title ?? '' }}
                             </a>
@@ -44,7 +44,7 @@
                         </p>
 
                         <div class="flex items-center justify-between text-sm">
-                            <a href="{{ route('frontend.post.show', [$lang, $post->translations->first()->slug ?? '']) }}"
+                            <a href="{{ route('frontend.post.show', [$langSlug, $post->translations->first()->slug ?? '']) }}"
                                 class="text-primary font-medium hover:underline flex items-center">
                                 Read more
                                 <svg class="w-4 h-4 ml-1" fill="none" stroke="currentColor" viewBox="0 0 24 24">
