@@ -25,7 +25,7 @@
                             <td class="px-4 py-2">{{ $tag->id }}</td>
                             <td class="px-4 py-2">
                                 @foreach($tag->translations as $trans)
-                                @if($trans->language_slug == $lang)
+                                @if($trans->language_slug === $langSlug)
                                     <div><span class="font-semibold">{{ strtoupper($trans->language_slug) }}:</span> {{ $trans->name }}</div>
                                 @endif
                                 @endforeach

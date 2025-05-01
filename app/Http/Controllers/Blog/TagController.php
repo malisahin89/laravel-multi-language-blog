@@ -12,9 +12,9 @@ class TagController extends Controller
 {
     public function index()
     {
-        $lang = Language::where('is_default', 1)->value('slug') ?? 'tr';
+        $langSlug = Language::where('is_default', 1)->value('slug') ?? 'tr';
         $tags = Tag::with('translations')->get();
-        return view('admin.tags.index', compact('tags', 'lang'));
+        return view('admin.tags.index', compact('tags', 'langSlug'));
     }
 
     public function create()

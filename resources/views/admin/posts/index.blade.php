@@ -27,8 +27,8 @@
                             <td class="px-4 py-2">{{ $post->id }}</td>
 
                             <td class="px-4 py-2">
-                                @if ($post->translations->where('language_slug', $lang)->first()?->title)
-                                    {{ $post->translations->where('language_slug', $lang)->first()?->title }}
+                                @if ($post->translations->where('language_slug', $langSlug)->first()?->title)
+                                    {{ $post->translations->where('language_slug', $langSlug)->first()?->title }}
                                 @else
                                     <div class="text-gray-500">No translations available</div>
                                 @endif
@@ -36,7 +36,7 @@
 
                             <td class="px-4 py-2">
                                 @if ($post->category && $post->category->translations->isNotEmpty())
-                                    {{ $post->category->translations->where('language_slug', $lang)->first()?->name }}
+                                    {{ $post->category->translations->where('language_slug', $langSlug)->first()?->name }}
                                 @else
                                     <div class="text-gray-500">No category</div>
                                 @endif

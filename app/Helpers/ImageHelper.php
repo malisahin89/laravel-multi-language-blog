@@ -4,7 +4,7 @@ use Intervention\Image\ImageManager;
 use Intervention\Image\Drivers\Gd\Driver;
 
 if (!function_exists('convertToWebP')) {
-    function convertToWebP($imageFile, $destinationPath, $quality = 80)
+    function convertToWebP($imageFile, $destinationPath, $quality = 70)
     {
         $mime = $imageFile->getClientMimeType();
         $allowedMimes = ['image/jpeg', 'image/jpg', 'image/png', 'image/gif', 'image/webp'];

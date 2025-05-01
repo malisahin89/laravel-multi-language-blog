@@ -16,7 +16,7 @@ class PostController extends Controller
     public function index()
     {
         $languages = Language::all();
-        $lang = Language::where('is_default', 1)->value('slug') ?? 'tr';
+        $langSlug = Language::where('is_default', 1)->value('slug') ?? 'tr';
         $posts = Post::query()
             ->select([
                 'id',
@@ -32,7 +32,7 @@ class PostController extends Controller
             ->paginate(10);
 
         // $posts = Post::with(['translations', 'category.translations', 'tags.translations'])->latest()->paginate(20);
-        return view('admin.posts.index', compact('posts', 'lang', 'languages'));
+        return view('admin.posts.index', compact('posts', 'langSlug', 'languages'));
     }
 
     public function create()
@@ -58,7 +58,7 @@ class PostController extends Controller
 
         try {
             $post = new Post();
-            $post->user_id = 1;
+            $post->user_id = auth()->id();
             $post->category_id = $request->category_id;
             $post->order = $request->order ?? 0;
             $post->is_featured = $request->has('is_featured');
@@ -152,7 +152,6 @@ class PostController extends Controller
         $categories = Category::with('translations')->get();
         $tags = Tag::with('translations')->get();
         $language = Language::where('slug', $language)->first();
-
 
         return view('admin.posts.edit', compact('post', 'languages', 'categories', 'tags', 'language'));
     }
