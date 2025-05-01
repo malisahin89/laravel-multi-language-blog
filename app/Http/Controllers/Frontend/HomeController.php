@@ -11,16 +11,10 @@ class HomeController extends Controller
 {
     use LanguageValidator;
 
-    public function redirectToDefault()
-    {
-        $defaultLang = Language::where('is_default', 1)->value('slug') ?? 'tr';
-        return redirect()->route('frontend.home', ['lang' => $defaultLang]);
-    }
-
     public function index($lang = null)
     {
-        $this->validateLanguage($lang);
         $langSlug = $lang ?? Language::where('is_default', 1)->value('slug');
+        $this->validateLanguage($langSlug);
 
         $posts = Post::query()
             ->select([
