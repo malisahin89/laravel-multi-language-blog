@@ -1,22 +1,22 @@
 <?php
 
-use Intervention\Image\ImageManager;
 use Intervention\Image\Drivers\Gd\Driver;
+use Intervention\Image\ImageManager;
 
-if (!function_exists('convertToWebP')) {
+if (! function_exists('convertToWebP')) {
     function convertToWebP($imageFile, $destinationPath, $quality = 70)
     {
-        $mime = $imageFile->getClientMimeType();
+        $mime         = $imageFile->getClientMimeType();
         $allowedMimes = ['image/jpeg', 'image/jpg', 'image/png', 'image/gif', 'image/webp'];
 
-        if (!in_array($mime, $allowedMimes)) {
+        if (! in_array($mime, $allowedMimes)) {
             throw new \Exception('Desteklenmeyen resim formatı: ' . $mime);
         }
 
-        $fullPath = public_path($destinationPath);
+        $fullPath   = public_path($destinationPath);
         $folderPath = dirname($fullPath);
 
-        if (!file_exists($folderPath)) {
+        if (! file_exists($folderPath)) {
             mkdir($folderPath, 0777, true);
         }
 

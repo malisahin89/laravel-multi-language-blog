@@ -7,23 +7,25 @@ Githuba boş atmamak için Intervention ve Breeze eklenmiştir, Blade dosyaları
 Geliştirilecek çok fazla şey var bende farkındayım.
 
 ---
-## 🎥 Video Tanıtımı (Şimdilik Yok)
+## 🎥 Video Tanıtımı
 
 - 📽️ **Proje Tanıtım Videosu:**  
-  [YouTube Video Linki](#)
+  [YouTube Video Linki](https://www.youtube.com/watch?v=vZVN6ERtUDc)
 
 - ⚙️ **Çalışma Anı (Demo):**  
-  [YouTube Çalışma Videosu - Belirli Zaman Damgası](#)
+  [YouTube Çalışma Videosu - Belirli Zaman Damgası](https://youtu.be/vZVN6ERtUDc?t=272)
 
 ---
 
 ## 🧩 Özellikler
 
 - ✅ Çoklu dil desteği (Admin paneli üzerinden)
-- ✅ Kullanıcı kaydı ve kimlik doğrulama sistemi (Breeze ile hallettim)
+- ✅ Kullanıcı kaydı ve kimlik doğrulama sistemi (Breeze)
 - ✅ Blog yazısı oluşturma, düzenleme ve silme
 - ✅ Kategori yönetimi
 - ✅ SEO dostu URL yapısı
+- ✅ SEO meta tagları
+- ✅ Sitemap.xml
 - ✅ Resim yükleme (Intervention Image)
 - ✅ Modern olmayan yapay zeka kullanılarak yapılmış Tailwind UI/UX tasarımı
 - ✅ Resim yükleme için "generateUniqueFilePath" ve "convertToWebP" fonksiyonları kullandım, Helpers içinde kendileri
@@ -209,40 +211,40 @@ Admin paneli `http://localhost:8000/admin` üzerinden görüntüleyebilirsin.
 ## 📸 Proje Görselleri
 
 ### Veritabanı
-![Veritabanı](SCREENSHOT/0.png)
+![Veritabanı](SCREENSHOT/0.webp)
 
 ### Ana Sayfa
-![Ana Sayfa](SCREENSHOT/1.png)
+![Ana Sayfa](SCREENSHOT/1.webp)
 
 ### Ana Sayfa En
-![Ana Sayfa En](SCREENSHOT/2.png)
+![Ana Sayfa En](SCREENSHOT/2.webp)
 
 ### Makale Sayfası
-![Üyelik Sayfası](SCREENSHOT/3.png)
+![Üyelik Sayfası](SCREENSHOT/3.webp)
 
 ### Kategoriler Sayfası
-![Kategoriler Sayfası](SCREENSHOT/4.png)
+![Kategoriler Sayfası](SCREENSHOT/4.webp)
 
 ### Etiket Sayfası
-![Etiket Sayfası](SCREENSHOT/5.png)
+![Etiket Sayfası](SCREENSHOT/5.webp)
 
 ### Admin Paneli
-![Admin Paneli](SCREENSHOT/6.png)
+![Admin Paneli](SCREENSHOT/6.webp)
 
 ### Dil Sayfası
-![Dil Sayfası](SCREENSHOT/7.png)
+![Dil Sayfası](SCREENSHOT/7.webp)
 
 ### Kategori Sayfası
-![Kategori Sayfası](SCREENSHOT/8.png)
+![Kategori Sayfası](SCREENSHOT/8.webp)
 
 ### Etiket Sayfası
-![Etiket Sayfası](SCREENSHOT/9.png)
+![Etiket Sayfası](SCREENSHOT/9.webp)
 
 ### Makale Sayfası
-![Makale Sayfası](SCREENSHOT/10.png)
+![Makale Sayfası](SCREENSHOT/10.webp)
 
 ### Makale Edit Sayfası
-![Makale Edit Sayfası](SCREENSHOT/11.png)
+![Makale Edit Sayfası](SCREENSHOT/11.webp)
 
 ---
 
