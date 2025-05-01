@@ -49,6 +49,8 @@ cd laravel-multi-language-blog
 
 ```bash
 composer install
+npm install
+npm run build
 ```
 
 ### 3. Ortam Dosyasını Ayarla
@@ -70,16 +72,26 @@ DB_PASSWORD=sifre
 
 ```bash
 php artisan migrate
+php artisan db:seed
+(php artisan migrate:fresh --seed)
 ```
 
 
-### 5. Geliştirme Sunucusunu Başlat
+### 5. ADMİN (Database/seeder/DatabaseSeeder.php)
+```bash
+Email: test@example.com
+Password: 11223344
+```
+
+### 6. Geliştirme Sunucusunu Başlat
 
 ```bash
 php artisan serve
 ```
 
 Artık projeyi `http://localhost:8000` üzerinden görüntüleyebilirsin.
+
+Admin paneli `http://localhost:8000/admin` üzerinden görüntüleyebilirsin.
 
 ---
 # 📂 Veritabanı Tabloları ve İlişkiler – Çok Dilli Blog Sistemi
