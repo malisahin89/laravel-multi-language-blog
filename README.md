@@ -1,10 +1,10 @@
 
 # 📝 Laravel Multi-Language Blog Platform
 
-Bu proje, çok dilli blog platformudur. Amaç çok dilli blog için **Veritabanı yapısı** örnek olmasıdır. Laravel 12, Intervention Image ve Breeze Blade kullanılarak geliştirilmiştir.
-Projede bir çok yapılabilir(cache, request vs) yapmadım, amacım sadece bu konu hakkında gerekli migration ve basit Controller iskeleti oluşturmaktı.
-Githuba boş atmamak için Intervention ve Breeze eklenmiştir, Blade dosyaları AI ile hazırlandı.
-Geliştirilecek çok fazla şey var bende farkındayım.
+Bu proje, çok dilli bir blog platformudur. Amacı, çok dilli bloglar için örnek bir veritabanı yapısı sunmaktır. Laravel 12, Intervention Image ve Breeze (Blade) kullanılarak geliştirilmiştir.
+Proje kapsamında birçok yapılabilir özellik (örneğin cache, request kontrolü) eklenmedi; asıl hedef, yalnızca bu konuya özel gerekli migration'ları ve temel bir Controller iskeletini oluşturmaktı.
+GitHub’a boş bir proje yüklememek adına Intervention ve Breeze projeye dahil edilmiştir. Blade dosyaları yapay zekâ desteğiyle hazırlanmıştır.
+Elbette geliştirilecek pek çok yönü olduğunun farkındayım.
 
 ---
 ## 🎥 Video Tanıtımı
@@ -12,27 +12,32 @@ Geliştirilecek çok fazla şey var bende farkındayım.
 - 📽️ **Proje Tanıtım Videosu:**  
   [YouTube Video Linki](https://www.youtube.com/watch?v=vZVN6ERtUDc)
 
-- ⚙️ **Çalışma Anı (Demo):**  
+- ⚙️ **YouTube Demo Videosu (Zaman Damgalı):**  
   [YouTube Çalışma Videosu - Belirli Zaman Damgası](https://youtu.be/vZVN6ERtUDc?t=272)
 
 ---
 
 ## 🧩 Özellikler
 
-- ✅ Çoklu dil desteği (Admin paneli üzerinden)
-- ✅ Kullanıcı kaydı ve kimlik doğrulama sistemi (Breeze)
+### ✅ Mevcut Özellikler
+
+- ✅ Çoklu dil desteği (admin paneli üzerinden yönetilebilir)
+- ✅ Kullanıcı kaydı ve kimlik doğrulama sistemi (Laravel Breeze)
 - ✅ Blog yazısı oluşturma, düzenleme ve silme
 - ✅ Kategori yönetimi
 - ✅ SEO dostu URL yapısı
-- ✅ SEO meta tagları
-- ✅ Sitemap.xml
-- ✅ Resim yükleme (Intervention Image)
-- ✅ Modern olmayan yapay zeka kullanılarak yapılmış Tailwind UI/UX tasarımı
-- ✅ Resim yükleme için "generateUniqueFilePath" ve "convertToWebP" fonksiyonları kullandım, Helpers içinde kendileri
-- ❌ Yorum sistemi (vakit bulamadım)
-- ❌ Cache eklemedim (Kodu veritabanı yapısı için yazdım ,vakit bulamadım)
-- ❌ Dil seçimini slug üzerinden yaptım (Kodu veritabanı yapısı için yazdım ,vakit bulamadım)
-- ❌ Düzgün bir veritabanı yapısı ile panel oluşturmak istedim, başlamışken bu hale geldi
+- ✅ SEO meta etiketleri (başlık, açıklama, anahtar kelimeler)
+- ✅ Otomatik olarak oluşturulan `sitemap.xml`
+- ✅ Resim yükleme (Intervention Image entegrasyonu)
+- ✅ Tailwind CSS kullanılarak geliştirilen, yapay zekâ destekli sade UI/UX tasarımı
+- ✅ Resim işlemleri için `generateUniqueFilePath` ve `convertToWebP` fonksiyonları kullanılmıştır (Helpers dizininde yer alır)
+
+### ❌ Henüz Eklenmemiş Özellikler
+
+- ❌ Yorum sistemi (şu an için dahil edilmedi)
+- ❌ Cache sistemi (bu proje yalnızca veritabanı yapısına odaklanmıştır)
+- ❌ Dil seçimi şu anda slug yapısı üzerinden yapılmaktadır (ileride geliştirilebilir)
+- ❌ Başlangıçta yalnızca veritabanı yapısı hedeflenmişti; geliştirme sürecinde temel panel özellikleri de eklendi
 
 ---
 
@@ -250,7 +255,7 @@ Admin paneli `http://localhost:8000/admin` üzerinden görüntüleyebilirsin.
 
 ## 📄 Lisans
 
-Bu proje açık kaynaklıdır ve tüm hakları senindir.
+Bu proje açık kaynaklıdır, dilediğiniz gibi kullanabilir ve geliştirebilirsiniz.
 
 ---
 
