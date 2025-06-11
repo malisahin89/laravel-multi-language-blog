@@ -2,14 +2,13 @@
 
 namespace App\Http\Controllers\Frontend;
 
-use App\Http\Controllers\Controller;
 use App\Models\Post;
 use App\Models\Language;
 use App\Models\Category;
 use App\Models\CategoryTranslation;
 use App\Traits\LanguageValidator;
 
-class CategoryController extends Controller
+class CategoryController extends BaseFrontendController
 {
     use LanguageValidator;
 
@@ -50,7 +49,6 @@ class CategoryController extends Controller
         ->latest()
         ->paginate(10);
     
-        // Dil bilgileri
         $languages = Language::all();
         $currentLanguage = $languages->firstWhere('slug', $lang);
     

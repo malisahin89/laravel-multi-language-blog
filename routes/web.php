@@ -5,15 +5,13 @@ use App\Http\Controllers\Admin\LanguageController;
 use App\Http\Controllers\Blog\CategoryController;
 use App\Http\Controllers\Blog\PostController;
 use App\Http\Controllers\Blog\TagController;
-use App\Http\Controllers\ProfileController;
-
-use App\Http\Controllers\SitemapController;
+use App\Http\Controllers\Frontend\CategoryController as FrontendCategoryController;
 use App\Http\Controllers\Frontend\HomeController;
 use App\Http\Controllers\Frontend\LanguageChangeController;
 use App\Http\Controllers\Frontend\PostController as FrontendPostController;
 use App\Http\Controllers\Frontend\TagController as FrontendTagController;
-use App\Http\Controllers\Frontend\CategoryController as FrontendCategoryController;
-
+use App\Http\Controllers\ProfileController;
+use App\Http\Controllers\SitemapController;
 use Illuminate\Support\Facades\Route;
 
 Route::get('/', [HomeController::class, 'index'])->name('frontend.home.withoutlang');
@@ -45,10 +43,15 @@ Route::prefix('admin')->middleware(['auth', 'verified'])->group(function () {
     Route::get('posts/{id}/edit', [PostController::class, 'edit'])->name('posts.edit');
     Route::get('posts/{id}/edit/{language}', [PostController::class, 'editLang'])->name('posts.editLang');
     Route::put('posts/{id}', [PostController::class, 'update'])->name('posts.update');
-    Route::delete('posts/{id}', [PostController::class, 'destroy'])->name('posts.destroy');
+
     Route::post('posts/{id}/removeGalleryImage', [PostController::class, 'removeGalleryImage'])->name('posts.removeGalleryImage');
     Route::post('posts/{id}/saveGalleryOrder', [PostController::class, 'saveGalleryOrder'])->name('posts.saveGalleryOrder');
     Route::post('posts/{id}/status', [PostController::class, 'updateStatus'])->name('posts.status');
+    Route::delete('posts/{postId}/translations/{translationId}', [PostController::class, 'destroyTranslation'])
+        ->name('posts.translations.destroy');
+    
+
+    Route::delete('posts/{id}', [PostController::class, 'destroy'])->name('posts.destroy');
 
     // CATEGORIES
     Route::get('categories', [CategoryController::class, 'index'])->name('categories.index');

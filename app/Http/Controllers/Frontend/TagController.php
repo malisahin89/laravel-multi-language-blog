@@ -2,14 +2,13 @@
 
 namespace App\Http\Controllers\Frontend;
 
-use App\Http\Controllers\Controller;
 use App\Models\Language;
 use App\Models\Post;
 use App\Models\Tag;
 use App\Models\TagTranslation;
 use App\Traits\LanguageValidator;
 
-class TagController extends Controller
+class TagController extends BaseFrontendController
 {
     use LanguageValidator;
 

@@ -2,12 +2,11 @@
 
 namespace App\Http\Controllers\Frontend;
 
-use App\Http\Controllers\Controller;
 use App\Models\Language;
 use App\Models\Post;
 use App\Traits\LanguageValidator;
 
-class HomeController extends Controller
+class HomeController extends BaseFrontendController
 {
     use LanguageValidator;
 

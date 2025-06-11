@@ -3,7 +3,7 @@
 -- https://www.phpmyadmin.net/
 --
 -- Anamakine: localhost:3306
--- Üretim Zamanı: 01 May 2025, 21:26:04
+-- Üretim Zamanı: 10 Haz 2025, 00:54:47
 -- Sunucu sürümü: 8.0.30
 -- PHP Sürümü: 8.2.27
 
@@ -212,12 +212,12 @@ INSERT INTO `migrations` (`id`, `migration`, `batch`) VALUES
 (4, '2025_04_07_111339_create_categories_table', 1),
 (5, '2025_04_07_111339_create_languages_table', 1),
 (6, '2025_04_07_111339_create_posts_table', 1),
-(7, '2025_04_07_111340_create_post_translations_table', 1),
 (8, '2025_04_07_111341_create_category_translations_table', 1),
 (9, '2025_04_07_111341_create_tags_table', 1),
 (10, '2025_04_07_111342_create_post_category_table', 1),
 (11, '2025_04_07_111342_create_tag_translations_table', 1),
-(12, '2025_04_07_111343_create_post_tag_table', 1);
+(12, '2025_04_07_111343_create_post_tag_table', 1),
+(14, '2025_04_07_111340_create_post_translations_table', 2);
 
 -- --------------------------------------------------------
 
@@ -263,7 +263,7 @@ INSERT INTO `posts` (`id`, `user_id`, `category_id`, `order`, `cover_image`, `ga
 (21, 1, 1, 6, 'uploads/posts\\20231102_170818_1698934132079.webp', NULL, 0, 1, 'published', '2025-04-13 20:42:00', '2025-05-01 18:02:00'),
 (22, 1, 2, 5, 'uploads/posts\\20231105_211130_1699209074955.webp', NULL, 1, 1, 'published', '2025-04-13 20:42:03', '2025-05-01 18:01:59'),
 (23, 1, 2, 4, 'uploads/posts\\20231107_131511_1699368815799.webp', '[]', 0, 0, 'published', '2025-04-13 20:42:07', '2025-05-01 18:22:58'),
-(28, 2, 1, 1, 'uploads/posts\\coin40.webp', '[]', 0, 1, 'published', '2025-05-01 15:09:43', '2025-05-01 18:23:09'),
+(28, 2, 1, 1, 'uploads/posts\\coin40.webp', '[]', 0, 1, 'published', '2025-05-01 12:09:43', '2025-05-01 15:23:09'),
 (29, 2, 2, 1, 'uploads/posts\\coin31.webp', NULL, 0, 1, 'published', '2025-05-01 15:14:16', '2025-05-01 18:01:56'),
 (30, 2, 3, 1, 'uploads/posts\\coin38.webp', NULL, 0, 1, 'published', '2025-05-01 15:15:34', '2025-05-01 18:01:54'),
 (31, 2, 1, 1, 'uploads/posts\\coin42.webp', NULL, 0, 1, 'published', '2025-05-01 15:16:35', '2025-05-01 16:42:31');
@@ -312,9 +312,6 @@ INSERT INTO `post_tag` (`id`, `post_id`, `tag_id`) VALUES
 (48, 23, 1),
 (49, 23, 2),
 (50, 23, 3),
-(59, 28, 1),
-(60, 28, 2),
-(61, 28, 3),
 (62, 29, 1),
 (63, 29, 2),
 (64, 29, 3),
@@ -333,14 +330,14 @@ INSERT INTO `post_tag` (`id`, `post_id`, `tag_id`) VALUES
 CREATE TABLE `post_translations` (
   `id` bigint UNSIGNED NOT NULL,
   `post_id` bigint UNSIGNED NOT NULL,
-  `language_slug` varchar(10) CHARACTER SET utf8mb4 COLLATE utf8mb4_unicode_ci NOT NULL,
-  `title` varchar(255) CHARACTER SET utf8mb4 COLLATE utf8mb4_unicode_ci NOT NULL,
-  `slug` varchar(255) CHARACTER SET utf8mb4 COLLATE utf8mb4_unicode_ci NOT NULL,
-  `short_description` text CHARACTER SET utf8mb4 COLLATE utf8mb4_unicode_ci,
-  `content` longtext CHARACTER SET utf8mb4 COLLATE utf8mb4_unicode_ci,
-  `seo_title` varchar(255) CHARACTER SET utf8mb4 COLLATE utf8mb4_unicode_ci DEFAULT NULL,
-  `seo_description` varchar(255) CHARACTER SET utf8mb4 COLLATE utf8mb4_unicode_ci DEFAULT NULL,
-  `seo_keywords` varchar(255) CHARACTER SET utf8mb4 COLLATE utf8mb4_unicode_ci DEFAULT NULL,
+  `language_slug` varchar(10) COLLATE utf8mb4_unicode_ci NOT NULL,
+  `title` varchar(255) COLLATE utf8mb4_unicode_ci NOT NULL,
+  `slug` varchar(255) COLLATE utf8mb4_unicode_ci NOT NULL,
+  `short_description` text COLLATE utf8mb4_unicode_ci,
+  `content` longtext COLLATE utf8mb4_unicode_ci,
+  `seo_title` varchar(255) COLLATE utf8mb4_unicode_ci DEFAULT NULL,
+  `seo_description` varchar(255) COLLATE utf8mb4_unicode_ci DEFAULT NULL,
+  `seo_keywords` varchar(255) COLLATE utf8mb4_unicode_ci DEFAULT NULL,
   `created_at` timestamp NULL DEFAULT NULL,
   `updated_at` timestamp NULL DEFAULT NULL
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_unicode_ci;
@@ -350,38 +347,38 @@ CREATE TABLE `post_translations` (
 --
 
 INSERT INTO `post_translations` (`id`, `post_id`, `language_slug`, `title`, `slug`, `short_description`, `content`, `seo_title`, `seo_description`, `seo_keywords`, `created_at`, `updated_at`) VALUES
-(65, 17, 'tr', 'Yapay Zeka ve Gelecek', 'yapay-zeka-ve-gelecek-0', 'Geleceği yapay zeka ile şekillendirmek mümkün mü?', 'Bu yazıda yapay zekanın hayatımızdaki etkilerini ve geleceğini inceliyoruz.', 'Yapay Zeka', 'Yapay zekanın geleceği hakkında bilgiler.', 'yapay zeka, gelecek, teknoloji', '2025-04-13 20:41:26', '2025-05-01 14:54:53'),
-(66, 17, 'ru', 'Будущее Искусственного Интеллекта', 'budushchee-iskusstvennogo-intellekta-0', 'Как ИИ изменит наш мир?', 'В этой статье мы рассмотрим влияние искусственного интеллекта на будущее.', 'ИИ Будущее', 'Информация о будущем ИИ.', 'искусственный интеллект, технологии, будущее', '2025-04-13 20:41:26', '2025-05-01 14:54:51'),
-(67, 17, 'en', 'The Future of Artificial Intelligence', 'the-future-of-artificial-intelligence-0', 'Can AI shape our future?', 'In this post, we explore how artificial intelligence is shaping the future.', 'AI Future', 'Information about the future of AI.', 'ai, artificial intelligence, future', '2025-04-13 20:41:26', '2025-05-01 14:54:49'),
-(68, 17, 'fr', 'L\'avenir de l\'intelligence artificielle', 'lavenir-de-lintelligence-artificielle-0', 'L\'IA peut-elle façonner notre avenir ?', 'Dans cet article, nous explorons l\'impact de l\'IA sur notre avenir.', 'Avenir IA', 'Informations sur l\'avenir de l\'IA.', 'ia, intelligence artificielle, technologie', '2025-04-13 20:41:26', '2025-05-01 14:54:47'),
-(69, 18, 'tr', 'Yapay Zeka ve Gelecek 6', 'yapay-zeka-ve-gelecek-6', 'Geleceği yapay zeka ile şekillendirmek mümkün mü?', 'Bu yazıda yapay zekanın hayatımızdaki etkilerini ve geleceğini inceliyoruz.', 'Yapay Zeka', 'Yapay zekanın geleceği hakkında bilgiler.', 'yapay zeka, gelecek, teknoloji', '2025-04-13 20:41:46', '2025-05-01 14:55:57'),
-(70, 18, 'ru', 'Будущее Искусственного Интеллекта 6', 'budushchee-iskusstvennogo-intellekta-6', 'Как ИИ изменит наш мир?', 'В этой статье мы рассмотрим влияние искусственного интеллекта на будущее.', 'ИИ Будущее', 'Информация о будущем ИИ.', 'искусственный интеллект, технологии, будущее', '2025-04-13 20:41:46', '2025-05-01 14:56:15'),
-(71, 18, 'en', 'The Future of Artificial Intelligence 6', 'the-future-of-artificial-intelligence-6', 'Can AI shape our future?', 'In this post, we explore how artificial intelligence is shaping the future.', 'AI Future', 'Information about the future of AI.', 'ai, artificial intelligence, future', '2025-04-13 20:41:46', '2025-05-01 14:56:26'),
-(72, 18, 'fr', 'L\'avenir de l\'intelligence artificielle 6', 'lavenir-de-lintelligence-artificielle-6', 'L\'IA peut-elle façonner notre avenir ?', 'Dans cet article, nous explorons l\'impact de l\'IA sur notre avenir.', 'Avenir IA', 'Informations sur l\'avenir de l\'IA.', 'ia, intelligence artificielle, technologie', '2025-04-13 20:41:46', '2025-05-01 14:56:35'),
-(73, 19, 'tr', 'Yapay Zeka ve Gelecek 5', 'yapay-zeka-ve-gelecek-5', 'Geleceği yapay zeka ile şekillendirmek mümkün mü?', 'Bu yazıda yapay zekanın hayatımızdaki etkilerini ve geleceğini inceliyoruz.', 'Yapay Zeka', 'Yapay zekanın geleceği hakkında bilgiler.', 'yapay zeka, gelecek, teknoloji', '2025-04-13 20:41:49', '2025-05-01 14:57:24'),
-(74, 19, 'ru', 'Будущее Искусственного Интеллекта 5', 'budushchee-iskusstvennogo-intellekta-5', 'Как ИИ изменит наш мир?', 'В этой статье мы рассмотрим влияние искусственного интеллекта на будущее.', 'ИИ Будущее', 'Информация о будущем ИИ.', 'искусственный интеллект, технологии, будущее', '2025-04-13 20:41:49', '2025-05-01 14:57:26'),
-(75, 19, 'en', 'The Future of Artificial Intelligence 5', 'the-future-of-artificial-intelligence-5', 'Can AI shape our future?', 'In this post, we explore how artificial intelligence is shaping the future.', 'AI Future', 'Information about the future of AI.', 'ai, artificial intelligence, future', '2025-04-13 20:41:49', '2025-05-01 14:58:18'),
-(76, 19, 'fr', 'L\'avenir de l\'intelligence artificielle 5', 'lavenir-de-lintelligence-artificielle-5', 'L\'IA peut-elle façonner notre avenir ?', 'Dans cet article, nous explorons l\'impact de l\'IA sur notre avenir.', 'Avenir IA', 'Informations sur l\'avenir de l\'IA.', 'ia, intelligence artificielle, technologie', '2025-04-13 20:41:49', '2025-05-01 14:58:25'),
-(77, 20, 'tr', 'Yapay Zeka ve Gelecek 4', 'yapay-zeka-ve-gelecek-4', 'Geleceği yapay zeka ile şekillendirmek mümkün mü?', 'Bu yazıda yapay zekanın hayatımızdaki etkilerini ve geleceğini inceliyoruz.', 'Yapay Zeka', 'Yapay zekanın geleceği hakkında bilgiler.', 'yapay zeka, gelecek, teknoloji', '2025-04-13 20:41:55', '2025-05-01 14:58:56'),
-(78, 20, 'ru', 'Будущее Искусственного Интеллекта 4', 'budushchee-iskusstvennogo-intellekta-4', 'Как ИИ изменит наш мир?', 'В этой статье мы рассмотрим влияние искусственного интеллекта на будущее.', 'ИИ Будущее', 'Информация о будущем ИИ.', 'искусственный интеллект, технологии, будущее', '2025-04-13 20:41:55', '2025-05-01 14:59:05'),
-(79, 20, 'en', 'The Future of Artificial Intelligence 4', 'the-future-of-artificial-intelligence-4', 'Can AI shape our future?', 'In this post, we explore how artificial intelligence is shaping the future.', 'AI Future', 'Information about the future of AI.', 'ai, artificial intelligence, future', '2025-04-13 20:41:55', '2025-05-01 14:59:13'),
-(80, 20, 'fr', 'L\'avenir de l\'intelligence artificielle 4', 'lavenir-de-lintelligence-artificielle-4', 'L\'IA peut-elle façonner notre avenir ?', 'Dans cet article, nous explorons l\'impact de l\'IA sur notre avenir.', 'Avenir IA', 'Informations sur l\'avenir de l\'IA.', 'ia, intelligence artificielle, technologie', '2025-04-13 20:41:55', '2025-05-01 14:59:21'),
-(81, 21, 'tr', 'Yapay Zeka ve Gelecek 3', 'yapay-zeka-ve-gelecek-3', 'Geleceği yapay zeka ile şekillendirmek mümkün mü?', 'Bu yazıda yapay zekanın hayatımızdaki etkilerini ve geleceğini inceliyoruz.', 'Yapay Zeka', 'Yapay zekanın geleceği hakkında bilgiler.', 'yapay zeka, gelecek, teknoloji', '2025-04-13 20:42:00', '2025-05-01 14:59:47'),
-(82, 21, 'ru', 'Будущее Искусственного Интеллекта 3', 'budushchee-iskusstvennogo-intellekta-3', 'Как ИИ изменит наш мир?', 'В этой статье мы рассмотрим влияние искусственного интеллекта на будущее.', 'ИИ Будущее', 'Информация о будущем ИИ.', 'искусственный интеллект, технологии, будущее', '2025-04-13 20:42:00', '2025-05-01 14:59:55'),
-(83, 21, 'en', 'The Future of Artificial Intelligence 3', 'the-future-of-artificial-intelligence-3', 'Can AI shape our future?', 'In this post, we explore how artificial intelligence is shaping the future.', 'AI Future', 'Information about the future of AI.', 'ai, artificial intelligence, future', '2025-04-13 20:42:00', '2025-05-01 15:00:02'),
-(84, 21, 'fr', 'L\'avenir de l\'intelligence artificielle 3', 'lavenir-de-lintelligence-artificielle-3', 'L\'IA peut-elle façonner notre avenir ?', 'Dans cet article, nous explorons l\'impact de l\'IA sur notre avenir.', 'Avenir IA', 'Informations sur l\'avenir de l\'IA.', 'ia, intelligence artificielle, technologie', '2025-04-13 20:42:00', '2025-05-01 15:00:08'),
-(85, 22, 'tr', 'Yapay Zeka ve Gelecek 2', 'yapay-zeka-ve-gelecek-2', 'Geleceği yapay zeka ile şekillendirmek mümkün mü?', 'Bu yazıda yapay zekanın hayatımızdaki etkilerini ve geleceğini inceliyoruz.', 'Yapay Zeka', 'Yapay zekanın geleceği hakkında bilgiler.', 'yapay zeka, gelecek, teknoloji', '2025-04-13 20:42:03', '2025-05-01 15:00:43'),
-(86, 22, 'ru', 'Будущее Искусственного Интеллекта 2', 'budushchee-iskusstvennogo-intellekta-2', 'Как ИИ изменит наш мир?', 'В этой статье мы рассмотрим влияние искусственного интеллекта на будущее.', 'ИИ Будущее', 'Информация о будущем ИИ.', 'искусственный интеллект, технологии, будущее', '2025-04-13 20:42:03', '2025-05-01 15:00:51'),
-(87, 22, 'en', 'The Future of Artificial Intelligence 2', 'the-future-of-artificial-intelligence-2', 'Can AI shape our future?', 'In this post, we explore how artificial intelligence is shaping the future.', 'AI Future', 'Information about the future of AI.', 'ai, artificial intelligence, future', '2025-04-13 20:42:03', '2025-05-01 15:00:56'),
-(88, 22, 'fr', 'L\'avenir de l\'intelligence artificielle 2', 'lavenir-de-lintelligence-artificielle-2', 'L\'IA peut-elle façonner notre avenir ?', 'Dans cet article, nous explorons l\'impact de l\'IA sur notre avenir.', 'Avenir IA', 'Informations sur l\'avenir de l\'IA.', 'ia, intelligence artificielle, technologie', '2025-04-13 20:42:03', '2025-05-01 15:01:02'),
-(89, 23, 'tr', 'Yapay Zeka ve Gelecek 1', 'yapay-zeka-ve-gelecek-1', 'Geleceği yapay zeka ile şekillendirmek mümkün mü?', 'Geleceği yapay zeka ile şekillendirmek mümkün mü?Geleceği yapay zeka ile şekillendirmek mümkün mü?Geleceği yapay zeka ile şekillendirmek mümkün mü?Geleceği yapay zeka ile şekillendirmek mümkün mü?', 'Yapay Zeka', 'Yapay zekanın geleceği hakkında bilgiler.', 'yapay zeka, gelecek, teknoloji', '2025-04-13 20:42:07', '2025-05-01 18:07:47'),
-(90, 23, 'ru', 'Будущее Искусственного Интеллекта 1', 'budushchee-iskusstvennogo-intellekta-1', 'Как ИИ изменит наш мир?', 'В этой статье мы рассмотрим влияние искусственного интеллекта на будущее.', 'ИИ Будущее', 'Информация о будущем ИИ.', 'искусственный интеллект, технологии, будущее', '2025-04-13 20:42:07', '2025-05-01 18:08:37'),
-(91, 23, 'en', 'The Future of Artificial Intelligence 1', 'the-future-of-artificial-intelligence-1', 'Can AI shape our future?', 'In this post, we explore how artificial intelligence is shaping the future.', 'AI Future', 'Information about the future of AI.', 'ai, artificial intelligence, future', '2025-04-13 20:42:07', '2025-05-01 18:09:17'),
-(92, 23, 'fr', 'L\'avenir de l\'intelligence artificielle 1', 'lavenir-de-lintelligence-artificielle-1', 'L\'IA peut-elle façonner notre avenir ?', 'Dans cet article, nous explorons l\'impact de l\'IA sur notre avenir.', 'Avenir IA', 'Informations sur l\'avenir de l\'IA.', 'ia, intelligence artificielle, technologie', '2025-04-13 20:42:07', '2025-05-01 18:09:46'),
-(101, 28, 'tr', 'Sadece Türkçe', 'sadece-turkce', 'Sadece Türkçe', '<p>Sadece Türkçe Sadece Türkçe Sadece Türkçe Sadece Türkçe Sadece Türkçe Sadece Türkçe Sadece Türkçe&nbsp;</p>', 'Sadece Türkçe', 'Sadece Türkçe', 'Sadece Türkçe', '2025-05-01 15:09:43', '2025-05-01 15:09:43'),
-(102, 29, 'ru', 'Только русский', 'tolko-russkiy', 'Только русский', '<p>Только русский Только русский Только русский Только русский&nbsp;</p>', 'Только русский', 'Только русский', 'Только русский', '2025-05-01 15:14:16', '2025-05-01 15:14:16'),
-(103, 30, 'en', 'Only English', 'only-english', 'Only English', '<p>Only English&nbsp;Only English&nbsp;Only English</p>', 'Only English', 'Only English', 'Only English', '2025-05-01 15:15:34', '2025-05-01 15:15:34'),
-(104, 31, 'fr', 'Seulement français', 'seulement-francais', 'Seulement français', '<p>Seulement français&nbsp;Seulement français&nbsp;Seulement français</p>', 'Seulement français', 'Seulement français', 'Seulement français', '2025-05-01 15:16:35', '2025-05-01 15:16:35');
+(65, 17, 'tr', 'Yapay Zeka ve Gelecek', 'yapay-zeka-ve-gelecek-0', 'Geleceği yapay zeka ile şekillendirmek mümkün mü?', 'Bu yazıda yapay zekanın hayatımızdaki etkilerini ve geleceğini inceliyoruz.', 'Yapay Zeka', 'Yapay zekanın geleceği hakkında bilgiler.', 'yapay zeka, gelecek, teknoloji', '2025-04-13 17:41:26', '2025-05-01 11:54:53'),
+(66, 17, 'ru', 'Будущее Искусственного Интеллекта', 'budushchee-iskusstvennogo-intellekta-0', 'Как ИИ изменит наш мир?', 'В этой статье мы рассмотрим влияние искусственного интеллекта на будущее.', 'ИИ Будущее', 'Информация о будущем ИИ.', 'искусственный интеллект, технологии, будущее', '2025-04-13 17:41:26', '2025-05-01 11:54:51'),
+(67, 17, 'en', 'The Future of Artificial Intelligence', 'the-future-of-artificial-intelligence-0', 'Can AI shape our future?', 'In this post, we explore how artificial intelligence is shaping the future.', 'AI Future', 'Information about the future of AI.', 'ai, artificial intelligence, future', '2025-04-13 17:41:26', '2025-05-01 11:54:49'),
+(68, 17, 'fr', 'L\'avenir de l\'intelligence artificielle', 'lavenir-de-lintelligence-artificielle-0', 'L\'IA peut-elle façonner notre avenir ?', 'Dans cet article, nous explorons l\'impact de l\'IA sur notre avenir.', 'Avenir IA', 'Informations sur l\'avenir de l\'IA.', 'ia, intelligence artificielle, technologie', '2025-04-13 17:41:26', '2025-05-01 11:54:47'),
+(69, 18, 'tr', 'Yapay Zeka ve Gelecek 6', 'yapay-zeka-ve-gelecek-6', 'Geleceği yapay zeka ile şekillendirmek mümkün mü?', 'Bu yazıda yapay zekanın hayatımızdaki etkilerini ve geleceğini inceliyoruz.', 'Yapay Zeka', 'Yapay zekanın geleceği hakkında bilgiler.', 'yapay zeka, gelecek, teknoloji', '2025-04-13 17:41:46', '2025-05-01 11:55:57'),
+(70, 18, 'ru', 'Будущее Искусственного Интеллекта 6', 'budushchee-iskusstvennogo-intellekta-6', 'Как ИИ изменит наш мир?', 'В этой статье мы рассмотрим влияние искусственного интеллекта на будущее.', 'ИИ Будущее', 'Информация о будущем ИИ.', 'искусственный интеллект, технологии, будущее', '2025-04-13 17:41:46', '2025-05-01 11:56:15'),
+(71, 18, 'en', 'The Future of Artificial Intelligence 6', 'the-future-of-artificial-intelligence-6', 'Can AI shape our future?', 'In this post, we explore how artificial intelligence is shaping the future.', 'AI Future', 'Information about the future of AI.', 'ai, artificial intelligence, future', '2025-04-13 17:41:46', '2025-05-01 11:56:26'),
+(72, 18, 'fr', 'L\'avenir de l\'intelligence artificielle 6', 'lavenir-de-lintelligence-artificielle-6', 'L\'IA peut-elle façonner notre avenir ?', 'Dans cet article, nous explorons l\'impact de l\'IA sur notre avenir.', 'Avenir IA', 'Informations sur l\'avenir de l\'IA.', 'ia, intelligence artificielle, technologie', '2025-04-13 17:41:46', '2025-05-01 11:56:35'),
+(73, 19, 'tr', 'Yapay Zeka ve Gelecek 5', 'yapay-zeka-ve-gelecek-5', 'Geleceği yapay zeka ile şekillendirmek mümkün mü?', 'Bu yazıda yapay zekanın hayatımızdaki etkilerini ve geleceğini inceliyoruz.', 'Yapay Zeka', 'Yapay zekanın geleceği hakkında bilgiler.', 'yapay zeka, gelecek, teknoloji', '2025-04-13 17:41:49', '2025-05-01 11:57:24'),
+(74, 19, 'ru', 'Будущее Искусственного Интеллекта 5', 'budushchee-iskusstvennogo-intellekta-5', 'Как ИИ изменит наш мир?', 'В этой статье мы рассмотрим влияние искусственного интеллекта на будущее.', 'ИИ Будущее', 'Информация о будущем ИИ.', 'искусственный интеллект, технологии, будущее', '2025-04-13 17:41:49', '2025-05-01 11:57:26'),
+(75, 19, 'en', 'The Future of Artificial Intelligence 5', 'the-future-of-artificial-intelligence-5', 'Can AI shape our future?', 'In this post, we explore how artificial intelligence is shaping the future.', 'AI Future', 'Information about the future of AI.', 'ai, artificial intelligence, future', '2025-04-13 17:41:49', '2025-05-01 11:58:18'),
+(76, 19, 'fr', 'L\'avenir de l\'intelligence artificielle 5', 'lavenir-de-lintelligence-artificielle-5', 'L\'IA peut-elle façonner notre avenir ?', 'Dans cet article, nous explorons l\'impact de l\'IA sur notre avenir.', 'Avenir IA', 'Informations sur l\'avenir de l\'IA.', 'ia, intelligence artificielle, technologie', '2025-04-13 17:41:49', '2025-05-01 11:58:25'),
+(77, 20, 'tr', 'Yapay Zeka ve Gelecek 4', 'yapay-zeka-ve-gelecek-4', 'Geleceği yapay zeka ile şekillendirmek mümkün mü?', 'Bu yazıda yapay zekanın hayatımızdaki etkilerini ve geleceğini inceliyoruz.', 'Yapay Zeka', 'Yapay zekanın geleceği hakkında bilgiler.', 'yapay zeka, gelecek, teknoloji', '2025-04-13 17:41:55', '2025-05-01 11:58:56'),
+(78, 20, 'ru', 'Будущее Искусственного Интеллекта 4', 'budushchee-iskusstvennogo-intellekta-4', 'Как ИИ изменит наш мир?', 'В этой статье мы рассмотрим влияние искусственного интеллекта на будущее.', 'ИИ Будущее', 'Информация о будущем ИИ.', 'искусственный интеллект, технологии, будущее', '2025-04-13 17:41:55', '2025-05-01 11:59:05'),
+(79, 20, 'en', 'The Future of Artificial Intelligence 4', 'the-future-of-artificial-intelligence-4', 'Can AI shape our future?', 'In this post, we explore how artificial intelligence is shaping the future.', 'AI Future', 'Information about the future of AI.', 'ai, artificial intelligence, future', '2025-04-13 17:41:55', '2025-05-01 11:59:13'),
+(80, 20, 'fr', 'L\'avenir de l\'intelligence artificielle 4', 'lavenir-de-lintelligence-artificielle-4', 'L\'IA peut-elle façonner notre avenir ?', 'Dans cet article, nous explorons l\'impact de l\'IA sur notre avenir.', 'Avenir IA', 'Informations sur l\'avenir de l\'IA.', 'ia, intelligence artificielle, technologie', '2025-04-13 17:41:55', '2025-05-01 11:59:21'),
+(81, 21, 'tr', 'Yapay Zeka ve Gelecek 3', 'yapay-zeka-ve-gelecek-3', 'Geleceği yapay zeka ile şekillendirmek mümkün mü?', 'Bu yazıda yapay zekanın hayatımızdaki etkilerini ve geleceğini inceliyoruz.', 'Yapay Zeka', 'Yapay zekanın geleceği hakkında bilgiler.', 'yapay zeka, gelecek, teknoloji', '2025-04-13 17:42:00', '2025-05-01 11:59:47'),
+(82, 21, 'ru', 'Будущее Искусственного Интеллекта 3', 'budushchee-iskusstvennogo-intellekta-3', 'Как ИИ изменит наш мир?', 'В этой статье мы рассмотрим влияние искусственного интеллекта на будущее.', 'ИИ Будущее', 'Информация о будущем ИИ.', 'искусственный интеллект, технологии, будущее', '2025-04-13 17:42:00', '2025-05-01 11:59:55'),
+(83, 21, 'en', 'The Future of Artificial Intelligence 3', 'the-future-of-artificial-intelligence-3', 'Can AI shape our future?', 'In this post, we explore how artificial intelligence is shaping the future.', 'AI Future', 'Information about the future of AI.', 'ai, artificial intelligence, future', '2025-04-13 17:42:00', '2025-05-01 12:00:02'),
+(84, 21, 'fr', 'L\'avenir de l\'intelligence artificielle 3', 'lavenir-de-lintelligence-artificielle-3', 'L\'IA peut-elle façonner notre avenir ?', 'Dans cet article, nous explorons l\'impact de l\'IA sur notre avenir.', 'Avenir IA', 'Informations sur l\'avenir de l\'IA.', 'ia, intelligence artificielle, technologie', '2025-04-13 17:42:00', '2025-05-01 12:00:08'),
+(85, 22, 'tr', 'Yapay Zeka ve Gelecek 2', 'yapay-zeka-ve-gelecek-2', 'Geleceği yapay zeka ile şekillendirmek mümkün mü?', 'Bu yazıda yapay zekanın hayatımızdaki etkilerini ve geleceğini inceliyoruz.', 'Yapay Zeka', 'Yapay zekanın geleceği hakkında bilgiler.', 'yapay zeka, gelecek, teknoloji', '2025-04-13 17:42:03', '2025-05-01 12:00:43'),
+(86, 22, 'ru', 'Будущее Искусственного Интеллекта 2', 'budushchee-iskusstvennogo-intellekta-2', 'Как ИИ изменит наш мир?', 'В этой статье мы рассмотрим влияние искусственного интеллекта на будущее.', 'ИИ Будущее', 'Информация о будущем ИИ.', 'искусственный интеллект, технологии, будущее', '2025-04-13 17:42:03', '2025-05-01 12:00:51'),
+(87, 22, 'en', 'The Future of Artificial Intelligence 2', 'the-future-of-artificial-intelligence-2', 'Can AI shape our future?', 'In this post, we explore how artificial intelligence is shaping the future.', 'AI Future', 'Information about the future of AI.', 'ai, artificial intelligence, future', '2025-04-13 17:42:03', '2025-05-01 12:00:56'),
+(88, 22, 'fr', 'L\'avenir de l\'intelligence artificielle 2', 'lavenir-de-lintelligence-artificielle-2', 'L\'IA peut-elle façonner notre avenir ?', 'Dans cet article, nous explorons l\'impact de l\'IA sur notre avenir.', 'Avenir IA', 'Informations sur l\'avenir de l\'IA.', 'ia, intelligence artificielle, technologie', '2025-04-13 17:42:03', '2025-05-01 12:01:02'),
+(89, 23, 'tr', 'Yapay Zeka ve Gelecek 1', 'yapay-zeka-ve-gelecek-1', 'Geleceği yapay zeka ile şekillendirmek mümkün mü?', 'Geleceği yapay zeka ile şekillendirmek mümkün mü?Geleceği yapay zeka ile şekillendirmek mümkün mü?Geleceği yapay zeka ile şekillendirmek mümkün mü?Geleceği yapay zeka ile şekillendirmek mümkün mü?', 'Yapay Zeka', 'Yapay zekanın geleceği hakkında bilgiler.', 'yapay zeka, gelecek, teknoloji', '2025-04-13 17:42:07', '2025-05-01 15:07:47'),
+(90, 23, 'ru', 'Будущее Искусственного Интеллекта 1', 'budushchee-iskusstvennogo-intellekta-1', 'Как ИИ изменит наш мир?', 'В этой статье мы рассмотрим влияние искусственного интеллекта на будущее.', 'ИИ Будущее', 'Информация о будущем ИИ.', 'искусственный интеллект, технологии, будущее', '2025-04-13 17:42:07', '2025-05-01 15:08:37'),
+(91, 23, 'en', 'The Future of Artificial Intelligence 1', 'the-future-of-artificial-intelligence-1', 'Can AI shape our future?', 'In this post, we explore how artificial intelligence is shaping the future.', 'AI Future', 'Information about the future of AI.', 'ai, artificial intelligence, future', '2025-04-13 17:42:07', '2025-05-01 15:09:17'),
+(92, 23, 'fr', 'L\'avenir de l\'intelligence artificielle 1', 'lavenir-de-lintelligence-artificielle-1', 'L\'IA peut-elle façonner notre avenir ?', 'Dans cet article, nous explorons l\'impact de l\'IA sur notre avenir.', 'Avenir IA', 'Informations sur l\'avenir de l\'IA.', 'ia, intelligence artificielle, technologie', '2025-04-13 17:42:07', '2025-05-01 15:09:46'),
+(101, 28, 'tr', 'Sadece Türkçe', 'sadece-turkce', 'Sadece Türkçe', '<p>Sadece Türkçe Sadece Türkçe Sadece Türkçe Sadece Türkçe Sadece Türkçe Sadece Türkçe Sadece Türkçe&nbsp;</p>', 'Sadece Türkçe', 'Sadece Türkçe', 'Sadece Türkçe', '2025-05-01 12:09:43', '2025-05-01 12:09:43'),
+(102, 29, 'ru', 'Только русский', 'tolko-russkiy', 'Только русский', '<p>Только русский Только русский Только русский Только русский&nbsp;</p>', 'Только русский', 'Только русский', 'Только русский', '2025-05-01 12:14:16', '2025-05-01 12:14:16'),
+(103, 30, 'en', 'Only English', 'only-english', 'Only English', '<p>Only English&nbsp;Only English&nbsp;Only English</p>', 'Only English', 'Only English', 'Only English', '2025-05-01 12:15:34', '2025-05-01 12:15:34'),
+(104, 31, 'fr', 'Seulement français', 'seulement-francais', 'Seulement français', '<p>Seulement français&nbsp;Seulement français&nbsp;Seulement français</p>', 'Seulement français', 'Seulement français', 'Seulement français', '2025-05-01 12:16:35', '2025-05-01 12:16:35');
 
 -- --------------------------------------------------------
 
@@ -398,6 +395,12 @@ CREATE TABLE `sessions` (
   `last_activity` int NOT NULL
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_unicode_ci;
 
+--
+-- Tablo döküm verisi `sessions`
+--
+
+INSERT INTO `sessions` (`id`, `user_id`, `ip_address`, `user_agent`, `payload`, `last_activity`) VALUES
+('uha6nwTrPovY3d6T0JIcFuBVYAz1tyOx0qiI7jho', 2, '127.0.0.1', 'Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/137.0.0.0 Safari/537.36 Edg/137.0.0.0', 'YTo1OntzOjY6Il90b2tlbiI7czo0MDoicDNrdlpyOG9OdmxQa0VQY2I4Zms0VmZabTBZNk85NjA5OFNPTE9VVCI7czo1MDoibG9naW5fd2ViXzU5YmEzNmFkZGMyYjJmOTQwMTU4MGYwMTRjN2Y1OGVhNGUzMDk4OWQiO2k6MjtzOjk6Il9wcmV2aW91cyI7YToxOntzOjM6InVybCI7czo2MjoiaHR0cDovL2xhcmF2ZWwtbXVsdGktbGFuZ3VhZ2UtYmxvZy50ZXN0L2FkbWluL3Bvc3RzLzIzL2VkaXQvcnUiO31zOjY6Il9mbGFzaCI7YToyOntzOjM6Im9sZCI7YTowOnt9czozOiJuZXciO2E6MDp7fX1zOjIyOiJQSFBERUJVR0JBUl9TVEFDS19EQVRBIjthOjA6e319', 1749516864);
 
 -- --------------------------------------------------------
 
@@ -480,6 +483,9 @@ CREATE TABLE `users` (
 
 INSERT INTO `users` (`id`, `name`, `email`, `email_verified_at`, `password`, `remember_token`, `created_at`, `updated_at`) VALUES
 (1, 'Test User', 'test@example.com', '2025-04-10 19:29:24', '$2y$12$h2MCHq3o0brEoGI8fyrRpuO.Ak2zrueaGSCWwxfe1lyrqI9uI9hZC', 'GOQKrHwXiL', '2025-04-10 19:29:24', '2025-04-10 19:29:24'),
+(2, 'malisahin89', 'malisahin89@gmail.com', '2025-04-01 18:31:19', '$2y$12$h2MCHq3o0brEoGI8fyrRpuO.Ak2zrueaGSCWwxfe1lyrqI9uI9hZC', '8hEDm6GnRlOvuad14wzkygLThMXStlNaNgwdFuSrwwt3v4RdUAeDHCzpyPAv', '2025-04-15 15:30:53', '2025-04-15 15:30:53'),
+(3, 'Francesca Richmond', 'juvyzoqihe@mailinator.com', NULL, '$2y$12$kA9tOJU7TjQXY45Ghko7meSk4uQkqEBBmL4JTch0iRFr7quS49ywm', NULL, '2025-04-15 16:10:57', '2025-04-15 16:10:57');
+
 --
 -- Dökümü yapılmış tablolar için indeksler
 --
@@ -578,8 +584,9 @@ ALTER TABLE `post_tag`
 --
 ALTER TABLE `post_translations`
   ADD PRIMARY KEY (`id`),
-  ADD UNIQUE KEY `post_translations_slug_unique` (`slug`),
-  ADD KEY `post_translations_post_id_foreign` (`post_id`);
+  ADD UNIQUE KEY `post_translations_post_lang_unique` (`post_id`,`language_slug`),
+  ADD UNIQUE KEY `post_translations_slug_lang_unique` (`slug`,`language_slug`),
+  ADD KEY `post_translations_language_slug_slug_index` (`language_slug`,`slug`);
 
 --
 -- Tablo için indeksler `sessions`
@@ -648,7 +655,7 @@ ALTER TABLE `languages`
 -- Tablo için AUTO_INCREMENT değeri `migrations`
 --
 ALTER TABLE `migrations`
-  MODIFY `id` int UNSIGNED NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=13;
+  MODIFY `id` int UNSIGNED NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=15;
 
 --
 -- Tablo için AUTO_INCREMENT değeri `posts`
@@ -666,7 +673,7 @@ ALTER TABLE `post_category`
 -- Tablo için AUTO_INCREMENT değeri `post_tag`
 --
 ALTER TABLE `post_tag`
-  MODIFY `id` bigint UNSIGNED NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=70;
+  MODIFY `id` bigint UNSIGNED NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=71;
 
 --
 -- Tablo için AUTO_INCREMENT değeri `post_translations`

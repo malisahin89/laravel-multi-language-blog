@@ -12,6 +12,7 @@
             </div>
         @endif
 
+
         <form action="{{ route('posts.update', $post->id) }}" method="POST" enctype="multipart/form-data" class="space-y-6">
             @csrf
             @method('PUT')
@@ -145,7 +146,22 @@
 
                     @if ((empty($language) && $lang->is_default === 1) || (!empty($language) && $lang->slug === $language->slug))
                         <div class="border border-gray-200 rounded-lg p-4 space-y-3 bg-gray-50">
-                            <h3 class="text-lg font-semibold text-gray-700">{{ strtoupper($lang->name) }}</h3>
+
+                            @if ($translation)
+                                <div class="flex justify-between items-center mb-4">
+                                    <h3 class="text-lg font-semibold text-gray-700">{{ strtoupper($lang->name) }}</h3>
+                                    <form
+                                        action="{{ route('posts.translations.destroy', ['postId' => $post->id, 'translationId' => $translation->id]) }}"
+                                        method="POST" class="inline-block">
+                                        @csrf
+                                        @method('DELETE')
+                                        <button type="button" onclick="deleteTranslation({{ $translation->id }})"
+                                            class="bg-red-500 hover:bg-red-600 text-white px-3 py-1 rounded text-sm">
+                                            <i class="fas fa-trash mr-1"></i> Çeviriyi Sil
+                                        </button>
+                                    </form>
+                                </div>
+                            @endif
 
                             <!-- Başlık -->
                             <div class="space-y-1">
@@ -357,6 +373,37 @@
                     }
                 });
             });
+        </script>
+
+        <script>
+            function deleteTranslation(translationId) {
+                if (confirm('Bu çeviriyi silmek istediğinize emin misiniz?')) {
+                    fetch(`/admin/posts/{{ $post->id }}/translations/${translationId}`, {
+                            method: 'DELETE',
+                            headers: {
+                                'X-CSRF-TOKEN': '{{ csrf_token() }}',
+                                'Content-Type': 'application/json',
+                                'Accept': 'application/json'
+                            }
+                        })
+                        .then(response => response.json())
+                        .then(data => {
+                            if (data.success) {
+                                if (data.redirect) {
+                                    window.location.href = data.redirect;
+                                } else if (data.reload) {
+                                    window.location.reload();
+                                }
+                            } else {
+                                alert(data.message || 'Bir hata oluştu');
+                            }
+                        })
+                        .catch(error => {
+                            console.error('Hata:', error);
+                            alert('Bir hata oluştu');
+                        });
+                }
+            }
         </script>
     @endpush
 @endsection

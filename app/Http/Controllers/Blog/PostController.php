@@ -3,9 +3,12 @@
 namespace App\Http\Controllers\Blog;
 
 use App\Http\Controllers\Controller;
+use App\Http\Requests\StorePostRequest;
+use App\Http\Requests\UpdatePostRequest;
 use App\Models\Category;
 use App\Models\Language;
 use App\Models\Post;
+use App\Models\PostTranslation;
 use App\Models\Tag;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\DB;
@@ -16,7 +19,8 @@ class PostController extends Controller
     public function index()
     {
         $languages = Language::all();
-        $langSlug = Language::where('is_default', 1)->value('slug') ?? 'tr';
+        $langSlug = Language::where('is_default', 1)->first()?->slug ?? 'tr';
+
         $posts = Post::query()
             ->select([
                 'id',
@@ -43,17 +47,8 @@ class PostController extends Controller
         return view('admin.posts.create', compact('languages', 'categories', 'tags'));
     }
 
-    public function store(Request $request)
+    public function store(StorePostRequest $request)
     {
-        $request->validate([
-            'cover_image' => 'nullable|image|mimes:jpg,jpeg,png|max:6048',
-            'gallery_images.*' => 'nullable|image|mimes:jpg,jpeg,png|max:6048',
-            'translations.*.title' => 'required|string|max:255',
-            'translations.*.slug' => 'required|string|max:255|unique:post_translations,slug',
-            'category_id' => 'nullable|exists:categories,id',
-            'tags.*' => 'nullable|exists:tags,id',
-        ]);
-
         DB::beginTransaction();
 
         try {
@@ -67,7 +62,7 @@ class PostController extends Controller
 
             if ($request->hasFile('cover_image')) {
                 $file = $request->file('cover_image');
-                $originalName = pathinfo($file->getClientOriginalName(), PATHINFO_FILENAME);  // Örn: photo
+                $originalName = pathinfo($file->getClientOriginalName(), PATHINFO_FILENAME);
 
                 // Benzersiz path oluştur
                 $uniqueFullPath = generateUniqueFilePath(public_path('uploads/posts'), $originalName, 'webp');
@@ -104,17 +99,10 @@ class PostController extends Controller
             $post->save();
 
             foreach ($request->translations as $lang => $data) {
-                $slug = Str::slug($data['slug']);
-                $original = $slug;
-                $i = 1;
-                while (\DB::table('post_translations')->where('slug', $slug)->exists()) {
-                    $slug = $original . '-' . $i++;
-                }
-
                 $post->translations()->create([
                     'language_slug' => $lang,
                     'title' => $data['title'],
-                    'slug' => $slug,
+                    'slug' => $data['slug'],
                     'short_description' => $data['short_description'] ?? '',
                     'content' => $data['content'] ?? '',
                     'seo_title' => $data['seo_title'] ?? null,
@@ -132,6 +120,99 @@ class PostController extends Controller
         } catch (\Exception $e) {
             DB::rollBack();
             return back()->with('error', 'Hata oluştu: ' . $e->getMessage());
+        }
+    }
+
+    public function update(UpdatePostRequest $request, $id)
+    {
+        ;
+
+        $post = Post::findOrFail($id);
+        DB::beginTransaction();
+
+        try {
+            $post = Post::findOrFail($id);
+            $post->category_id = $request->category_id;
+            $post->order = $request->order ?? 0;
+            $post->is_featured = $request->boolean('is_featured');
+            $post->comment_enabled = $request->boolean('comment_enabled');
+            $post->status = $request->status ?? 'draft';
+
+            // Cover image işlemleri...
+            if ($request->hasFile('cover_image')) {
+                // Önce varsa eski görseli sil
+                if ($post->cover_image && file_exists(public_path($post->cover_image))) {
+                    @unlink(public_path($post->cover_image));
+                }
+
+                $file = $request->file('cover_image');
+                $originalName = pathinfo($file->getClientOriginalName(), PATHINFO_FILENAME);
+
+                $uniqueFullPath = generateUniqueFilePath(public_path('uploads/posts'), $originalName, 'webp');
+                $relativePath = str_replace(public_path() . DIRECTORY_SEPARATOR, '', $uniqueFullPath);
+
+                convertToWebP($file, $relativePath);
+
+                $post->cover_image = $relativePath;
+            }
+
+            // Gallery images işlemleri...
+            if ($request->hasFile('gallery_images')) {
+                $existingImages = $post->gallery_images ?? [];
+
+                foreach ($request->file('gallery_images') as $file) {
+                    $originalName = pathinfo($file->getClientOriginalName(), PATHINFO_FILENAME);
+
+                    $uniqueFullPath = generateUniqueFilePath(public_path('uploads/gallery'), $originalName, 'webp');
+                    $relativePath = str_replace(public_path() . DIRECTORY_SEPARATOR, '', $uniqueFullPath);
+
+                    convertToWebP($file, $relativePath);
+
+                    $existingImages[] = $relativePath;
+                }
+
+                $post->gallery_images = $existingImages;
+            }
+
+            $post->save();
+
+            // Translation işlemleri
+
+            foreach ($request->translations as $lang => $data) {
+                $translation = $post->translations()->where('language_slug', $lang)->first();
+
+                if ($translation) {
+                    $translation->update([
+                        'title' => $data['title'],
+                        'slug' => $data['slug'],
+                        'short_description' => $data['short_description'] ?? '',
+                        'content' => $data['content'] ?? '',
+                        'seo_title' => $data['seo_title'] ?? null,
+                        'seo_description' => $data['seo_description'] ?? null,
+                        'seo_keywords' => $data['seo_keywords'] ?? null,
+                    ]);
+                } else {
+                    $post->translations()->create([
+                        'language_slug' => $lang,
+                        'title' => $data['title'],
+                        'slug' => $data['slug'],
+                        'short_description' => $data['short_description'] ?? '',
+                        'content' => $data['content'] ?? '',
+                        'seo_title' => $data['seo_title'] ?? null,
+                        'seo_description' => $data['seo_description'] ?? null,
+                        'seo_keywords' => $data['seo_keywords'] ?? null,
+                    ]);
+                }
+            }
+
+            $post->tags()->sync($request->tags ?? []);
+
+            DB::commit();
+
+            return redirect()->route('posts.index')->with('success', 'Blog başarıyla güncellendi.');
+        } catch (\Exception $e) {
+            DB::rollBack();
+            return back()->with('error', 'Güncelleme işlemi başarısız: ' . $e->getMessage());
         }
     }
 
@@ -154,118 +235,6 @@ class PostController extends Controller
         $language = Language::where('slug', $language)->first();
 
         return view('admin.posts.edit', compact('post', 'languages', 'categories', 'tags', 'language'));
-    }
-
-    public function update(Request $request, $id)
-    {
-        $validationRules = [
-            'cover_image' => 'nullable|image|mimes:jpg,jpeg,png|max:6048',
-            'gallery_images.*' => 'nullable|image|mimes:jpg,jpeg,png|max:6048',
-            'category_id' => 'nullable|exists:categories,id',
-            'tags.*' => 'nullable|exists:tags,id',
-            'order' => 'nullable|integer',
-            'is_featured' => 'nullable|boolean',
-            'comment_enabled' => 'nullable|boolean',
-            'status' => 'in:draft,published',
-        ];
-
-        $post = Post::findOrFail($id);
-
-        foreach ($request->translations as $lang => $data) {
-            $translation = $post->translations()->where('language_slug', $lang)->first();
-            $translationId = $translation ? $translation->id : null;
-
-            $validationRules["translations.$lang.title"] = 'required|string|max:255';
-            $validationRules["translations.$lang.slug"] = 'required|string|max:255|unique:post_translations,slug,' . $translationId;
-        }
-
-        $request->validate($validationRules);
-
-        DB::beginTransaction();
-
-        try {
-            $post = Post::findOrFail($id);
-            $post->category_id = $request->category_id;
-            $post->order = $request->order ?? 0;
-            $post->is_featured = $request->boolean('is_featured');
-            $post->comment_enabled = $request->boolean('comment_enabled');
-            $post->status = $request->status ?? 'draft';
-
-            if ($request->hasFile('cover_image')) {
-                // Önce varsa eski görseli sil
-                if ($post->cover_image && file_exists(public_path($post->cover_image))) {
-                    @unlink(public_path($post->cover_image));
-                }
-
-                $file = $request->file('cover_image');
-                $originalName = pathinfo($file->getClientOriginalName(), PATHINFO_FILENAME);  // örn: photo
-
-                // Benzersiz .webp dosya yolu oluştur
-                $uniqueFullPath = generateUniqueFilePath(public_path('uploads/posts'), $originalName, 'webp');
-                $relativePath = str_replace(public_path() . DIRECTORY_SEPARATOR, '', $uniqueFullPath);
-
-                // WebP'ye dönüştür ve kaydet
-                convertToWebP($file, $relativePath);
-
-                $post->cover_image = $relativePath;
-            }
-
-            if ($request->hasFile('gallery_images')) {
-                $existingImages = $post->gallery_images ?? [];
-
-                foreach ($request->file('gallery_images') as $file) {
-                    $originalName = pathinfo($file->getClientOriginalName(), PATHINFO_FILENAME);
-
-                    // Benzersiz .webp yolu oluştur
-                    $uniqueFullPath = generateUniqueFilePath(public_path('uploads/gallery'), $originalName, 'webp');
-                    $relativePath = str_replace(public_path() . DIRECTORY_SEPARATOR, '', $uniqueFullPath);
-
-                    // WebP'ye dönüştür ve kaydet
-                    convertToWebP($file, $relativePath);
-
-                    $existingImages[] = $relativePath;
-                }
-
-                $post->gallery_images = $existingImages;
-            }
-
-            $post->save();
-
-            foreach ($request->translations as $lang => $data) {
-                $translation = $post->translations()->where('language_slug', $lang)->first();
-
-                if ($translation) {
-                    $translation->update([
-                        'title' => $data['title'],
-                        'slug' => Str::slug($data['slug']),
-                        'short_description' => $data['short_description'] ?? '',
-                        'content' => $data['content'] ?? '',
-                        'seo_title' => $data['seo_title'] ?? null,
-                        'seo_description' => $data['seo_description'] ?? null,
-                        'seo_keywords' => $data['seo_keywords'] ?? null,
-                    ]);
-                } else {
-                    $post->translations()->create([
-                        'language_slug' => $lang,
-                        'title' => $data['title'],
-                        'slug' => Str::slug($data['slug']),
-                        'short_description' => $data['short_description'] ?? '',
-                        'content' => $data['content'] ?? '',
-                        'seo_title' => $data['seo_title'] ?? null,
-                        'seo_description' => $data['seo_description'] ?? null,
-                        'seo_keywords' => $data['seo_keywords'] ?? null,
-                    ]);
-                }
-            }
-
-            $post->tags()->sync($request->tags ?? []);
-
-            DB::commit();
-            return redirect()->route('posts.index')->with('success', 'Blog başarıyla güncellendi.');
-        } catch (\Exception $e) {
-            DB::rollBack();
-            return back()->with('error', 'Güncelleme işlemi başarısız: ' . $e->getMessage());
-        }
     }
 
     public function updateStatus(Request $request, $id)
@@ -352,28 +321,78 @@ class PostController extends Controller
     //     imagedestroy($imageResource);
     // }
 
+    private function deletePostAndAssets(Post $post): void
+    {
+        $post->tags()->detach();
+
+        if ($post->cover_image && file_exists(public_path($post->cover_image))) {
+            @unlink(public_path($post->cover_image));
+        }
+
+        if ($post->gallery_images) {
+            foreach ($post->gallery_images as $img) {
+                if (file_exists(public_path($img))) {
+                    @unlink(public_path($img));
+                }
+            }
+        }
+
+        $post->delete();
+    }
+
     public function destroy($id)
     {
         try {
             $post = Post::findOrFail($id);
             $post->translations()->delete();
-            $post->tags()->detach();
-            if ($post->cover_image && file_exists(public_path($post->cover_image))) {
-                @unlink(public_path($post->cover_image));
-            }
-
-            if ($post->gallery_images) {
-                foreach ($post->gallery_images as $img) {
-                    if (file_exists(public_path($img))) {
-                        @unlink(public_path($img));
-                    }
-                }
-            }
-
-            $post->delete();
+            $this->deletePostAndAssets($post);
             return redirect()->route('posts.index')->with('success', 'Blog başarıyla silindi.');
         } catch (\Exception $e) {
             return back()->with('error', 'Silme işlemi başarısız: ' . $e->getMessage());
         }
     }
+
+public function destroyTranslation($postId, $translationId)
+{
+    DB::beginTransaction();
+    try {
+        $translation = PostTranslation::findOrFail($translationId);
+        $post = $translation->post; // Post'u buradan alıyoruz
+        
+        // Önce çeviriyi siliyoruz
+        $translation->delete();
+
+        // Kalan çeviri sayısını kontrol ediyoruz
+        $remainingTranslations = $post->translations()->count();
+
+        // Eğer hiç çeviri kalmadıysa
+        if ($remainingTranslations === 0) {
+            $this->deletePostAndAssets($post);
+            
+            DB::commit();
+            
+            return response()->json([
+                'success' => true,
+                'message' => 'Son çeviri silindiği için blog yazısı da silindi',
+                'redirect' => route('posts.index')
+            ]);
+        }
+
+        DB::commit();
+
+        return response()->json([
+            'success' => true,
+            'message' => 'Çeviri başarıyla silindi',
+            'reload' => true
+        ]);
+
+    } catch (\Exception $e) {
+        DB::rollBack();
+        \Log::error('Çeviri silinirken hata: ' . $e->getMessage());
+        return response()->json([
+            'success' => false,
+            'message' => 'Çeviri silinirken bir hata oluştu: ' . $e->getMessage()
+        ], 500);
+    }
+}
 }

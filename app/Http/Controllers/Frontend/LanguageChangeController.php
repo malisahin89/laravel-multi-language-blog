@@ -2,7 +2,6 @@
 
 namespace App\Http\Controllers\Frontend;
 
-use App\Http\Controllers\Controller;
 use App\Models\CategoryTranslation;
 use App\Models\PostTranslation;
 use App\Models\TagTranslation;
@@ -11,21 +10,20 @@ use Illuminate\Support\Facades\Redirect;
 use Illuminate\Support\Facades\Route;
 use Illuminate\Support\Str;
 
-class LanguageChangeController extends Controller
+class LanguageChangeController extends BaseFrontendController
 {
     public function switch($targetLang, $encodedPath)
     {
         $path = base64_decode($encodedPath);
 
-        // Şimdi güvenli şekilde yönlendirme yapabilirsin
-        $segments = explode('/', $path); // ['tr', 'blog', 'slug']
+        $segments = explode('/', $path);
         $slug = $segments[2] ?? null;
 
         if (!$slug) {
             return redirect()->route('frontend.home', ['lang' => $targetLang]);
         }
 
-        // Hangi route?
+        // route
         $firstSegment = $segments[1] ?? null;
 
         switch ($firstSegment) {
@@ -66,7 +64,6 @@ class LanguageChangeController extends Controller
                 break;
         }
 
-        // Çevrilemeyen içerikler için fallback:
         // return "not found";
         return redirect()->route('frontend.home', ['lang' => $targetLang]);
     }

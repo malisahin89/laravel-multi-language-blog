@@ -2,7 +2,6 @@
 
 namespace App\Http\Controllers\Frontend;
 
-use App\Http\Controllers\Controller;
 use App\Models\Category;
 use App\Models\Language;
 use App\Models\Post;
@@ -10,7 +9,7 @@ use App\Models\PostTranslation;
 use App\Models\Tag;
 use App\Traits\LanguageValidator;
 
-class PostController extends Controller
+class PostController extends BaseFrontendController
 {
     use LanguageValidator;
 
